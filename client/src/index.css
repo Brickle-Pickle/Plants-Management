@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Typography */
+    --ff-primary: 'Gloria Hallelujah', cursive;
+    --ff-secondary: 'Inter', sans-serif;
+    
+    /* Color Palette - Nature Inspired */
+    /* Primary Colors - Greens */
+    --color-primary-50: #f0fdf4;
+    --color-primary-100: #dcfce7;
+    --color-primary-200: #bbf7d0;
+    --color-primary-300: #86efac;
+    --color-primary-400: #4ade80;
+    --color-primary-500: #22c55e;
+    --color-primary-600: #16a34a;
+    --color-primary-700: #15803d;
+    --color-primary-800: #166534;
+    --color-primary-900: #14532d;
+    
+    /* Secondary Colors - Earth Tones */
+    --color-secondary-50: #fefbf3;
+    --color-secondary-100: #fef3e2;
+    --color-secondary-200: #fde4c4;
+    --color-secondary-300: #fbcf9b;
+    --color-secondary-400: #f8b572;
+    --color-secondary-500: #f59e0b;
+    --color-secondary-600: #d97706;
+    --color-secondary-700: #b45309;
+    --color-secondary-800: #92400e;
+    --color-secondary-900: #78350f;
+    
+    /* Accent Colors - Florals */
+    --color-accent-pink: #ec4899;
+    --color-accent-purple: #8b5cf6;
+    --color-accent-blue: #3b82f6;
+    --color-accent-yellow: #eab308;
+    
+    /* Neutral Colors */
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a3a3a3;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+    
+    /* Status Colors */
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
+    
+    /* Plant Status Colors */
+    --color-healthy: #22c55e;
+    --color-needs-attention: #f59e0b;
+    --color-sick: #ef4444;
+    --color-watering: #06b6d4;
+    --color-fertilizing: #8b5cf6;
+    --color-pruning: #f97316;
+    --color-repotting: #84cc16;
+    
+    /* Spacing Scale */
+    --spacing-xs: 0.25rem;    /* 4px */
+    --spacing-sm: 0.5rem;     /* 8px */
+    --spacing-md: 1rem;       /* 16px */
+    --spacing-lg: 1.5rem;     /* 24px */
+    --spacing-xl: 2rem;       /* 32px */
+    --spacing-2xl: 3rem;      /* 48px */
+    --spacing-3xl: 4rem;      /* 64px */
+    
+    /* Border Radius */
+    --radius-sm: 0.25rem;     /* 4px */
+    --radius-md: 0.5rem;      /* 8px */
+    --radius-lg: 0.75rem;     /* 12px */
+    --radius-xl: 1rem;        /* 16px */
+    --radius-2xl: 1.5rem;     /* 24px */
+    --radius-full: 9999px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+    
+    /* Typography Scale */
+    --text-xs: 0.75rem;       /* 12px */
+    --text-sm: 0.875rem;      /* 14px */
+    --text-base: 1rem;        /* 16px */
+    --text-lg: 1.125rem;      /* 18px */
+    --text-xl: 1.25rem;       /* 20px */
+    --text-2xl: 1.5rem;       /* 24px */
+    --text-3xl: 1.875rem;     /* 30px */
+    --text-4xl: 2.25rem;      /* 36px */
+    --text-5xl: 3rem;         /* 48px */
+    
+    /* Line Heights */
+    --leading-tight: 1.25;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.75;
+    
+    /* Font Weights */
+    --font-light: 300;
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-normal: 300ms ease-in-out;
+    --transition-slow: 500ms ease-in-out;
+    
+    /* Z-Index Scale */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
+    
+    /* Layout Breakpoints */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+    
+    /* Component Specific Variables */
+    /* Cards */
+    --card-bg: var(--color-neutral-50);
+    --card-border: var(--color-neutral-200);
+    --card-shadow: var(--shadow-md);
+    --card-radius: var(--radius-lg);
+    
+    /* Buttons */
+    --btn-primary-bg: var(--color-primary-600);
+    --btn-primary-hover: var(--color-primary-700);
+    --btn-primary-text: white;
+    --btn-secondary-bg: var(--color-secondary-500);
+    --btn-secondary-hover: var(--color-secondary-600);
+    --btn-secondary-text: white;
+    
+    /* Forms */
+    --input-bg: white;
+    --input-border: var(--color-neutral-300);
+    --input-border-focus: var(--color-primary-500);
+    --input-text: var(--color-neutral-900);
+    --input-placeholder: var(--color-neutral-400);
+    
+    /* Navigation */
+    --nav-bg: white;
+    --nav-border: var(--color-neutral-200);
+    --nav-link: var(--color-neutral-700);
+    --nav-link-hover: var(--color-primary-600);
+    --nav-link-active: var(--color-primary-700);
+    
+    /* Sidebar */
+    --sidebar-bg: var(--color-primary-50);
+    --sidebar-border: var(--color-primary-200);
+    --sidebar-width: 280px;
+    
+    /* Header */
+    --header-height: 64px;
+    --header-bg: white;
+    --header-border: var(--color-neutral-200);
+    
+    /* Plant Care Type Colors */
+    --care-watering-bg: #e0f7fa;
+    --care-watering-text: #006064;
+    --care-fertilizing-bg: #f3e5f5;
+    --care-fertilizing-text: #4a148c;
+    --care-pruning-bg: #fff3e0;
+    --care-pruning-text: #e65100;
+    --care-repotting-bg: #f1f8e9;
+    --care-repotting-text: #33691e;
+    
+    /* Calendar Colors */
+    --calendar-today: var(--color-primary-100);
+    --calendar-event: var(--color-primary-500);
+    --calendar-overdue: var(--color-error);
+    --calendar-upcoming: var(--color-warning);
+}
+
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Override colors for dark mode */
+        --color-neutral-50: #171717;
+        --color-neutral-100: #262626;
+        --color-neutral-200: #404040;
+        --color-neutral-300: #525252;
+        --color-neutral-400: #737373;
+        --color-neutral-500: #a3a3a3;
+        --color-neutral-600: #d4d4d4;
+        --color-neutral-700: #e5e5e5;
+        --color-neutral-800: #f5f5f5;
+        --color-neutral-900: #fafafa;
+        
+        /* Component overrides for dark mode */
+        --card-bg: var(--color-neutral-100);
+        --card-border: var(--color-neutral-300);
+        --nav-bg: var(--color-neutral-100);
+        --nav-border: var(--color-neutral-300);
+        --header-bg: var(--color-neutral-100);
+        --header-border: var(--color-neutral-300);
+        --input-bg: var(--color-neutral-100);
+        --input-border: var(--color-neutral-400);
+        --input-text: var(--color-neutral-900);
+    }
+}
+
+/* Responsive Design Utilities */
+@media (max-width: 768px) {
+    .not_responsive {
+        display: none;
+    }
+    
+    :root {
+        --sidebar-width: 100%;
+        --header-height: 56px;
+    }
+}
+
+@media (min-width: 768px) {
+    .responsive {
+        display: none;
+    }
+}
+
+/* Utility Classes for Plant Management */
+.plant-status-healthy {
+    color: var(--color-healthy);
+    background-color: color-mix(in srgb, var(--color-healthy) 10%, transparent);
+}
+
+.plant-status-needs-attention {
+    color: var(--color-needs-attention);
+    background-color: color-mix(in srgb, var(--color-needs-attention) 10%, transparent);
+}
+
+.plant-status-sick {
+    color: var(--color-sick);
+    background-color: color-mix(in srgb, var(--color-sick) 10%, transparent);
+}
+
+.care-type-watering {
+    background-color: var(--care-watering-bg);
+    color: var(--care-watering-text);
+}
+
+.care-type-fertilizing {
+    background-color: var(--care-fertilizing-bg);
+    color: var(--care-fertilizing-text);
+}
+
+.care-type-pruning {
+    background-color: var(--care-pruning-bg);
+    color: var(--care-pruning-text);
+}
+
+.care-type-repotting {
+    background-color: var(--care-repotting-bg);
+    color: var(--care-repotting-text);
+}
