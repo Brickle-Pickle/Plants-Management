@@ -1,0 +1,60 @@
+{
+    "pageInfo": {
+        "title": "Crear Cuenta",
+        "subtitle": "Únete a nuestra comunidad",
+        "description": "Comienza tu viaje en el cuidado de plantas"
+    },
+    "form": {
+        "fields": {
+            "email": {
+                "label": "Correo Electrónico",
+                "placeholder": "tu@email.com"
+            },
+            "password": {
+                "label": "Contraseña",
+                "placeholder": "Crea una contraseña segura"
+            },
+            "confirmPassword": {
+                "label": "Confirmar Contraseña",
+                "placeholder": "Repite tu contraseña"
+            }
+        },
+        "buttons": {
+            "submit": "Crear Cuenta",
+            "termsAndConditions": "Acepto los términos y condiciones"
+        },
+        "validation": {
+            "emailRequired": "El correo electrónico es obligatorio",
+            "emailInvalid": "Ingresa un correo electrónico válido",
+            "passwordRequired": "La contraseña es obligatoria",
+            "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+            "passwordWeak": "La contraseña debe contener al menos una mayúscula, una minúscula y un número",
+            "confirmPasswordRequired": "Confirma tu contraseña",
+            "passwordsNotMatch": "Las contraseñas no coinciden",
+            "termsRequired": "Debes aceptar los términos y condiciones"
+        }
+    },
+    "navigation": {
+        "hasAccount": "¿Ya tienes cuenta?",
+        "loginLink": "Inicia sesión aquí",
+        "backToHome": "Volver al inicio"
+    },
+    "messages": {
+        "loading": "Creando cuenta...",
+        "success": "¡Cuenta creada exitosamente!",
+        "error": "Error al crear la cuenta. Inténtalo de nuevo."
+    },
+    "plantQuotes": [
+        "Cada gran jardín comienza con una sola semilla",
+        "Tu aventura verde está a punto de comenzar",
+        "Bienvenido a la familia de amantes de las plantas",
+        "Juntos haremos crecer algo hermoso",
+        "El mejor momento para plantar fue hace 20 años. El segundo mejor momento es ahora"
+    ],
+    "benefits": [
+        "Gestiona todas tus plantas en un solo lugar",
+        "Recibe recordatorios personalizados de cuidado",
+        "Accede a consejos de expertos en jardinería",
+        "Conecta con otros amantes de las plantas"
+    ]
+}

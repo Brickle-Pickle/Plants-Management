@@ -62,6 +62,36 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    const register = async (userData) => {
+        try {
+            setIsLoading(true)
+            setError(null)
+            
+            // #backend - will connect to /api/auth/register
+            console.log('Register attempt:', userData)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            
+            // Simulate successful registration
+            setIsAuthenticated(true)
+            setUser({ 
+                name: 'Usuario Demo',
+                email: userData.email 
+            })
+            
+            // Navigate to dashboard after successful registration
+            navigate('/')
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al crear la cuenta. Inténtalo de nuevo.')
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     const logout = () => {
         // #backend - will clear tokens and call logout endpoint
         setIsAuthenticated(false)
@@ -96,6 +126,7 @@ export const AppProvider = ({ children }) => {
         
         // Auth functions
         login,
+        register,
         logout
     }
 
