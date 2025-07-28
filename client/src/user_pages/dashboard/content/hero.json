@@ -1,0 +1,30 @@
+{
+    "plantQuotes": [
+        "Una planta al día mantiene el estrés alejado",
+        "Las plantas no solo purifican el aire, purifican el alma",
+        "Cuidar plantas es cuidar la vida misma",
+        "Cada planta tiene su propia historia que contar",
+        "El secreto de la jardinería está en amar tus plantas",
+        "Las plantas nos enseñan paciencia y constancia",
+        "Un hogar con plantas es un hogar lleno de vida",
+        "Regar con amor hace crecer más que regar con agua",
+        "Las plantas son la poesía de la tierra",
+        "Cultivar plantas es cultivar esperanza"
+    ],
+    "appInfo": {
+        "title": "Plants Management",
+        "subtitle": "Tu compañero perfecto para el cuidado de plantas",
+        "description": "Gestiona tus plantas domésticas de manera inteligente. Programa recordatorios, lleva un historial de cuidados y mantén tus plantas siempre saludables.",
+        "features": [
+            "Recordatorios automáticos de riego",
+            "Historial completo de cuidados",
+            "Galería de fotos de tus plantas",
+            "Calendario de actividades",
+            "Consejos personalizados"
+        ]
+    },
+    "cta": {
+        "primary": "Comenzar Ahora",
+        "secondary": "Ver Mis Plantas"
+    }
+}
