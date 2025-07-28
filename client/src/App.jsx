@@ -1,4 +1,5 @@
-import { AppProvider } from './context/app_context.jsx'
+import { useAppContext } from './context/app_context.jsx'
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 // Common
 import Navbar from './common/navbar.jsx'
@@ -11,8 +12,14 @@ import Register from './user_pages/register/register.jsx'
 // import Reminders from './user_pages/reminders/reminders.jsx'
 
 function App() {
+    const { location } = useAppContext();
+
+    useEffect(() => {
+        scrollTo(0, 0);
+    }, [location]);
+
     return (
-        <AppProvider>
+        <>
             <Navbar />
 
             <Routes>
@@ -24,7 +31,7 @@ function App() {
             </Routes>
 
             <Footer />
-        </AppProvider>
+        </>
     )
 }
 
