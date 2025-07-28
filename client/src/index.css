@@ -216,6 +216,11 @@
     }
 }
 
+body {
+    padding: 0;
+    margin: 0;
+}
+
 /* Responsive Design Utilities */
 @media (max-width: 768px) {
     .not_responsive {

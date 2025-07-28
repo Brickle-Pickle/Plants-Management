@@ -1,0 +1,18 @@
+{
+    "brand": {
+        "title": "Plants Management",
+        "alt": "Logo de Plants Management"
+    },
+    "navigation": {
+        "plants": "Mis Plantas",
+        "reminders": "Recordatorios"
+    },
+    "auth": {
+        "login": "Iniciar Sesión",
+        "register": "Registrarse"
+    },
+    "menu": {
+        "toggle": "Menú",
+        "close": "Cerrar"
+    }
+}

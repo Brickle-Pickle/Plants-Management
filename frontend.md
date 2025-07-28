@@ -18,6 +18,25 @@ El frontend de la aplicación está desarrollado con React y Vite para una exper
   - `/care-history/:plantId` - Historial de cuidados
   - `/reminders` - Recordatorios
 
+## Componentes del Frontend
+
+A continuación se describen los componentes principales que corresponden a cada ruta y funcionalidad del frontend:
+
+- **`Dashboard`** (Ruta `/`): Componente principal que muestra un resumen general, estadísticas y accesos rápidos.
+- **`Login`** (Ruta `/login`): Formulario para autenticación de usuarios.
+- **`Register`** (Ruta `/register`): Formulario para registro de nuevos usuarios.
+- **`PlantsList`** (Ruta `/plants`): Lista de plantas del usuario con opciones para ver, editar o eliminar.
+- **`PlantDetail`** (Ruta `/plants/:id`): Detalle completo de una planta, incluyendo fotos, estado y cuidados.
+- **`CareHistory`** (Ruta `/care-history/:plantId`): Historial de cuidados realizados a una planta específica.
+- **`Reminders`** (Ruta `/reminders`): Lista y gestión de recordatorios de cuidados.
+
+### Componentes adicionales recomendados:
+
+- **`Header`**: Barra de navegación común en todas las páginas.
+- **`Footer`**: Pie de página con información general.
+- **`PrivateRoute`**: Componente para proteger rutas que requieren autenticación.
+- **`Notification`**: Componente para mostrar alertas y mensajes al usuario.
+
 ### Configuración y Scripts
 
 - El proyecto frontend se encuentra en la carpeta `client/`.
