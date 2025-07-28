@@ -5,7 +5,7 @@ import Navbar from './common/navbar.jsx'
 import Footer from './common/footer.jsx'
 // User Pages
 import Dashboard from './user_pages/dashboard/dashboard.jsx'
-// import Login from './user_pages/login/login.jsx'
+import Login from './user_pages/login/login.jsx'
 // import Register from './user_pages/register/register.jsx'
 // import Plants from './user_pages/plants/plants.jsx'
 // import Reminders from './user_pages/reminders/reminders.jsx'
@@ -13,17 +13,17 @@ import Dashboard from './user_pages/dashboard/dashboard.jsx'
 function App() {
     return (
         <AppProvider>
-			<Navbar />
+            <Navbar />
 
-			<Routes>
-				<Route path="/" element={<Dashboard />} />
-				{ /* <Route path="/login" element={<Login />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/plants" element={<Plants />} />
-				<Route path="/reminders" element={<Reminders />} /> */ }
-			</Routes>
+            <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/login" element={<Login />} />
+                { /* <Route path="/register" element={<Register />} />
+                <Route path="/plants" element={<Plants />} />
+                <Route path="/reminders" element={<Reminders />} /> */ }
+            </Routes>
 
-			<Footer />
+            <Footer />
         </AppProvider>
     )
 }

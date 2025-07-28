@@ -470,7 +470,7 @@
     width: 85%;
     height: 85%;
     object-fit: contain;
-    border-radius: var(--radius-2xl);
+    border-radius: 30px;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     padding: var(--spacing-lg);

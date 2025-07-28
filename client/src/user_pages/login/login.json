@@ -1,0 +1,45 @@
+{
+    "pageInfo": {
+        "title": "Iniciar Sesión",
+        "subtitle": "Bienvenido de vuelta",
+        "description": "Accede a tu cuenta para gestionar tus plantas"
+    },
+    "form": {
+        "fields": {
+            "email": {
+                "label": "Correo Electrónico",
+                "placeholder": "tu@email.com"
+            },
+            "password": {
+                "label": "Contraseña",
+                "placeholder": "Tu contraseña"
+            }
+        },
+        "buttons": {
+            "submit": "Iniciar Sesión",
+            "forgotPassword": "¿Olvidaste tu contraseña?"
+        },
+        "validation": {
+            "emailRequired": "El correo electrónico es obligatorio",
+            "emailInvalid": "Ingresa un correo electrónico válido",
+            "passwordRequired": "La contraseña es obligatoria",
+            "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
+        }
+    },
+    "navigation": {
+        "noAccount": "¿No tienes cuenta?",
+        "registerLink": "Regístrate aquí",
+        "backToHome": "Volver al inicio"
+    },
+    "messages": {
+        "loading": "Iniciando sesión...",
+        "success": "¡Bienvenido de vuelta!",
+        "error": "Credenciales incorrectas. Inténtalo de nuevo."
+    },
+    "plantQuotes": [
+        "Cada día es una nueva oportunidad para cuidar lo que amas",
+        "Las plantas crecen mejor cuando las cuidas con constancia",
+        "Tu jardín te está esperando",
+        "Bienvenido de vuelta a tu oasis verde"
+    ]
+}

@@ -22,6 +22,8 @@ export const AppProvider = ({ children }) => {
     const [user, setUser] = useState(null) // #backend - will be populated from API
     const [isAuthenticated, setIsAuthenticated] = useState(false) // #backend - will be managed by auth system
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false) // Global loading state
+    const [error, setError] = useState(null) // Global error state
 
     // Navigation functions
     const navigateTo = (path) => {
@@ -31,17 +33,46 @@ export const AppProvider = ({ children }) => {
 
     // Auth functions (simulated for now)
     const login = async (credentials) => {
-        // #backend - will connect to /api/auth/login
-        console.log('Login attempt:', credentials)
-        setIsAuthenticated(true)
-        setUser({ name: 'Usuario Demo' }) // Simulated user data
+        try {
+            setIsLoading(true)
+            setError(null)
+            
+            // #backend - will connect to /api/auth/login
+            console.log('Login attempt:', credentials)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            
+            // Simulate successful login
+            setIsAuthenticated(true)
+            setUser({ 
+                name: 'Usuario Demo',
+                email: credentials.email 
+            })
+            
+            // Navigate to dashboard after successful login
+            navigate('/')
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al iniciar sesión. Inténtalo de nuevo.')
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const logout = () => {
         // #backend - will clear tokens and call logout endpoint
         setIsAuthenticated(false)
         setUser(null)
+        setError(null)
         navigate('/login')
+    }
+
+    // Clear error function
+    const clearError = () => {
+        setError(null)
     }
 
     // Context value with navigate and location
@@ -57,6 +88,11 @@ export const AppProvider = ({ children }) => {
         setIsAuthenticated,
         isMobileMenuOpen,
         setIsMobileMenuOpen,
+        isLoading,
+        setIsLoading,
+        error,
+        setError,
+        clearError,
         
         // Auth functions
         login,
