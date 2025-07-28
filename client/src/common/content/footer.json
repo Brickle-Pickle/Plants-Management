@@ -1,0 +1,48 @@
+{
+    "brand": {
+        "title": "Plants Management",
+        "description": "Tu compañero perfecto para el cuidado de plantas domésticas"
+    },
+    "navigation": {
+        "title": "Navegación",
+        "links": [
+            {
+                "label": "Iniciar Sesión",
+                "path": "/login"
+            },
+            {
+                "label": "Registrarse",
+                "path": "/register"
+            },
+            {
+                "label": "Mis Plantas",
+                "path": "/plants"
+            },
+            {
+                "label": "Recordatorios",
+                "path": "/reminders"
+            }
+        ]
+    },
+    "developer": {
+        "title": "Desarrollador",
+        "name": "Brickle Pickle",
+        "links": [
+            {
+                "label": "GitHub",
+                "url": "https://github.com/Brickle-Pickle",
+                "icon": "FaGithub"
+            },
+            {
+                "label": "Portfolio",
+                "url": "https://brickle-pickle.vercel.app",
+                "icon": "FaGlobe"
+            }
+        ]
+    },
+    "legal": {
+        "copyright": "© 2025 Plants Management. Todos los derechos reservados.",
+        "madeWith": "Hecho con",
+        "by": "por"
+    }
+}

@@ -221,6 +221,10 @@ body {
     margin: 0;
 }
 
+html {
+    padding: 0;
+}
+
 /* Responsive Design Utilities */
 @media (max-width: 768px) {
     .not_responsive {
