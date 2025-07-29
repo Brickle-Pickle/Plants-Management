@@ -37,6 +37,13 @@ export const AppProvider = ({ children }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [selectedPlant, setSelectedPlant] = useState(null)
     
+    // Care History State Variables
+    const [careRecords, setCareRecords] = useState([]) // #backend - will be populated from API
+    const [isLoadingCareHistory, setIsLoadingCareHistory] = useState(false)
+    const [careHistoryError, setCareHistoryError] = useState(null)
+    const [careHistoryFilter, setCareHistoryFilter] = useState('all') // 'all', 'completed', 'pending'
+    const [careHistorySortBy, setCareHistorySortBy] = useState('date') // 'date', 'type'
+    
     // Grid View Settings
     const [gridViewMode, setGridViewMode] = useState('grid') // 'grid' or 'list'
     const [plantsFilter, setPlantsFilter] = useState('all') // 'all', 'healthy', 'needsWater', 'needsAttention', 'sick'
@@ -299,6 +306,131 @@ export const AppProvider = ({ children }) => {
         setPlantsError(null)
     }
 
+    // Care History Functions
+    const fetchCareHistory = async (plantId) => {
+        try {
+            setIsLoadingCareHistory(true)
+            setCareHistoryError(null)
+            
+            // #backend - will connect to /api/plants/:id/care-history
+            console.log('Fetching care history for plant:', plantId)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Simulate care records data
+            const mockCareRecords = [
+                {
+                    _id: '1',
+                    plantId: plantId,
+                    userId: 'user1',
+                    careType: 'watering',
+                    description: 'Riego regular de la planta',
+                    nextDueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                    completed: true,
+                    completedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+                    notes: 'La planta se veía un poco seca',
+                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)
+                },
+                {
+                    _id: '2',
+                    plantId: plantId,
+                    userId: 'user1',
+                    careType: 'fertilizing',
+                    description: 'Fertilización mensual',
+                    nextDueDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
+                    completed: true,
+                    completedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+                    notes: 'Aplicado fertilizante líquido',
+                    createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
+                },
+                {
+                    _id: '3',
+                    plantId: plantId,
+                    userId: 'user1',
+                    careType: 'pruning',
+                    description: 'Poda de hojas secas',
+                    nextDueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+                    completed: false,
+                    completedAt: null,
+                    notes: 'Revisar hojas amarillas en la parte inferior',
+                    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+                }
+            ]
+            
+            setCareRecords(mockCareRecords)
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setCareHistoryError('Error al cargar el historial de cuidados')
+            console.error('Error fetching care history:', error)
+        } finally {
+            setIsLoadingCareHistory(false)
+        }
+    }
+
+    const addCareRecord = async (careData) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/care-records POST
+            console.log('Adding care record:', careData)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 800))
+            
+            // Generate new ID (in real app, this would come from backend)
+            const newId = Math.max(...careRecords.map(c => parseInt(c._id)), 0) + 1
+            
+            // Create new care record object
+            const newCareRecord = {
+                _id: newId.toString(),
+                ...careData,
+                createdAt: new Date()
+            }
+            
+            // Add care record to local state
+            setCareRecords(prevRecords => [...prevRecords, newCareRecord])
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al agregar el registro de cuidado')
+            console.error('Error adding care record:', error)
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const updateCareRecord = async (recordId, updatedData) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/care-records/:id PUT
+            console.log('Updating care record:', recordId, updatedData)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 600))
+            
+            // Update care record in local state
+            setCareRecords(prevRecords => 
+                prevRecords.map(record => 
+                    record._id === recordId 
+                        ? { ...record, ...updatedData }
+                        : record
+                )
+            )
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al actualizar el registro de cuidado')
+            console.error('Error updating care record:', error)
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     // Context value with navigate and location
     const contextValue = {
         // Navigation
@@ -325,6 +457,18 @@ export const AppProvider = ({ children }) => {
         setIsLoadingPlants,
         plantsError,
         setPlantsError,
+        
+        // Care History State
+        careRecords,
+        setCareRecords,
+        isLoadingCareHistory,
+        setIsLoadingCareHistory,
+        careHistoryError,
+        setCareHistoryError,
+        careHistoryFilter,
+        setCareHistoryFilter,
+        careHistorySortBy,
+        setCareHistorySortBy,
         
         // Modal State
         isViewModalOpen,
@@ -356,6 +500,11 @@ export const AppProvider = ({ children }) => {
         openDeleteModal,
         openAddModal,
         closeAllModals,
+        
+        // Care History Functions
+        fetchCareHistory,
+        addCareRecord,
+        updateCareRecord,
         
         // Auth functions
         login,

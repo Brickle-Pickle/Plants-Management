@@ -1,0 +1,508 @@
+import React, { useContext, useEffect, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
+import AppContext from '../../context/app_context.jsx'
+import content from './care_history.json'
+import './care_history.css'
+// React Icons imports
+import { 
+    IoArrowBackOutline,
+    IoLeafOutline,
+    IoLocationOutline,
+    IoWaterOutline,
+    IoNutritionOutline,
+    IoCutOutline,
+    IoFlowerOutline,
+    IoTimeOutline,
+    IoCheckmarkCircleOutline,
+    IoEllipseOutline,
+    IoCalendarOutline,
+    IoDocumentTextOutline,
+    IoFilterOutline,
+    IoSwapVerticalOutline,
+    IoAddOutline,
+    IoSadOutline
+} from 'react-icons/io5'
+
+// Mock data for testing
+const mockPlants = [
+    {
+        id: 1,
+        name: "Monstera Deliciosa",
+        species: "Monstera deliciosa",
+        location: "Sala de estar",
+        image: "/monstera.png"
+    },
+    {
+        id: 2,
+        name: "Pothos Dorado",
+        species: "Epipremnum aureum",
+        location: "Cocina",
+        image: "/pothos.png"
+    },
+    {
+        id: 3,
+        name: "Sansevieria",
+        species: "Sansevieria trifasciata",
+        location: "Dormitorio",
+        image: "/sansevieria.png"
+    }
+]
+
+const mockCareRecords = [
+    {
+        _id: "1",
+        plantId: 1,
+        careType: "watering",
+        description: "Riego semanal regular",
+        notes: "La tierra estaba bastante seca, necesitaba agua urgentemente",
+        completed: true,
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        completedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        nextDueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) // 5 days from now
+    },
+    {
+        _id: "2",
+        plantId: 1,
+        careType: "fertilizing",
+        description: "Fertilizante líquido mensual",
+        notes: "Aplicado fertilizante balanceado 10-10-10",
+        completed: true,
+        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
+        completedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        nextDueDate: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000) // 23 days from now
+    },
+    {
+        _id: "3",
+        plantId: 1,
+        careType: "pruning",
+        description: "Poda de hojas amarillas",
+        notes: "",
+        completed: false,
+        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        nextDueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days from now
+    },
+    {
+        _id: "4",
+        plantId: 1,
+        careType: "watering",
+        description: "Riego de emergencia",
+        notes: "Las hojas se veían un poco caídas",
+        completed: true,
+        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+        completedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+        nextDueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days from now
+    },
+    {
+        _id: "5",
+        plantId: 1,
+        careType: "repotting",
+        description: "Cambio de maceta por crecimiento",
+        notes: "Necesita una maceta más grande, las raíces están saliendo por los agujeros de drenaje",
+        completed: false,
+        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        nextDueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week from now
+    }
+]
+
+const CareHistory = () => {
+    const { plantId } = useParams()
+    const {
+        plants = [], // Remove mock data fallback
+        careRecords = [],
+        isLoadingCareHistory = false,
+        careHistoryError = null,
+        careHistoryFilter = 'all',
+        setCareHistoryFilter = () => {},
+        careHistorySortBy = 'date',
+        setCareHistorySortBy = () => {},
+        fetchCareHistory = () => {},
+        updateCareRecord = () => {},
+        navigate = () => {},
+        clearError = () => {},
+        fetchPlants = () => {}, // Add fetchPlants function
+        isLoadingPlants = false // Add loading state for plants
+    } = useContext(AppContext) || {}
+
+    // Find the current plant
+    const currentPlant = plants.find(plant => plant.id.toString() === plantId)
+
+    // Load plants and care history when component mounts
+    useEffect(() => {
+        const loadData = async () => {
+            // First ensure plants are loaded
+            if (plants.length === 0 && !isLoadingPlants) {
+                await fetchPlants()
+            }
+            
+            // Then load care history for the specific plant
+            if (plantId) {
+                fetchCareHistory(plantId)
+            }
+        }
+        
+        loadData()
+        
+        // Clear any previous errors
+        clearError()
+        
+        // Cleanup function
+        return () => {
+            clearError()
+        }
+    }, [plantId, plants.length])
+
+    // Filter care records by plantId (convert both to string for comparison)
+    const filteredCareRecords = useMemo(() => {
+        return careRecords.filter(record => record.plantId.toString() === plantId)
+    }, [careRecords, plantId])
+
+    // Filter and sort care records
+    const filteredAndSortedRecords = useMemo(() => {
+        let filtered = filteredCareRecords
+
+        // Apply filter
+        if (careHistoryFilter === 'completed') {
+            filtered = filtered.filter(record => record.completed)
+        } else if (careHistoryFilter === 'pending') {
+            filtered = filtered.filter(record => !record.completed)
+        }
+
+        // Apply sorting
+        const sorted = [...filtered].sort((a, b) => {
+            if (careHistorySortBy === 'date') {
+                const dateA = new Date(a.completedAt || a.createdAt)
+                const dateB = new Date(b.completedAt || b.createdAt)
+                return dateB - dateA // Most recent first
+            } else if (careHistorySortBy === 'type') {
+                return a.careType.localeCompare(b.careType)
+            }
+            return 0
+        })
+
+        return sorted
+    }, [filteredCareRecords, careHistoryFilter, careHistorySortBy])
+
+    // Get care type icon and color
+    const getCareTypeInfo = (careType) => {
+        const typeMap = {
+            watering: {
+                icon: <IoWaterOutline />,
+                className: 'care-type-watering'
+            },
+            fertilizing: {
+                icon: <IoNutritionOutline />,
+                className: 'care-type-fertilizing'
+            },
+            pruning: {
+                icon: <IoCutOutline />,
+                className: 'care-type-pruning'
+            },
+            repotting: {
+                icon: <IoFlowerOutline />,
+                className: 'care-type-repotting'
+            }
+        }
+        
+        return typeMap[careType] || {
+            icon: <IoLeafOutline />,
+            className: 'care-type-default'
+        }
+    }
+
+    // Format date helper
+    const formatDate = (date) => {
+        if (!date) return content.placeholders.noDate
+        
+        const plantDate = new Date(date)
+        const now = new Date()
+        const diffTime = Math.abs(now - plantDate)
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+        
+        const options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }
+        
+        const formattedDate = plantDate.toLocaleDateString('es-ES', options)
+        
+        if (diffDays === 0) return `Hoy, ${formattedDate}`
+        if (diffDays === 1) return plantDate > now ? `Mañana, ${formattedDate}` : `Ayer, ${formattedDate}`
+        
+        return formattedDate
+    }
+
+    // Handle mark as completed
+    const handleMarkCompleted = async (recordId) => {
+        try {
+            await updateCareRecord(recordId, {
+                completed: true,
+                completedAt: new Date()
+            })
+        } catch (error) {
+            console.error('Error marking care record as completed:', error)
+        }
+    }
+
+    // Handle back navigation
+    const handleBack = () => {
+        navigate('/plants')
+    }
+
+    // Loading state - show loading if either plants or care history are loading
+    if (isLoadingPlants || isLoadingCareHistory) {
+        return (
+            <div className="care-history">
+                <div className="care-history-container">
+                    <div className="loading-state">
+                        <IoLeafOutline className="loading-icon" />
+                        <p>{content.loading}</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    // Error state
+    if (careHistoryError) {
+        return (
+            <div className="care-history">
+                <div className="care-history-container">
+                    <div className="error-state">
+                        <IoSadOutline className="error-icon" />
+                        <p>{careHistoryError}</p>
+                        <button 
+                            className="retry-button"
+                            onClick={() => fetchCareHistory(plantId)}
+                        >
+                            Reintentar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    // Plant not found
+    if (!currentPlant) {
+        return (
+            <div className="care-history">
+                <div className="care-history-container">
+                    <div className="error-state">
+                        <IoSadOutline className="error-icon" />
+                        <p>Planta no encontrada</p>
+                        <button 
+                            className="retry-button"
+                            onClick={handleBack}
+                        >
+                            {content.backButton}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className="care-history">
+            <div className="care-history-container">
+                {/* Header */}
+                <div className="care-history-header">
+                    <button 
+                        className="back-button"
+                        onClick={handleBack}
+                        aria-label={content.backButton}
+                    >
+                        <IoArrowBackOutline />
+                        <span className="not_responsive">{content.backButton}</span>
+                    </button>
+                    
+                    <h1 className="page-title">
+                        <IoLeafOutline /> {content.pageTitle}
+                    </h1>
+                </div>
+
+                {/* Plant Info Card */}
+                <div className="plant-info-card">
+                    <div className="plant-info-content">
+                        <div className="plant-image-container">
+                            {currentPlant.image ? (
+                                <img 
+                                    src={currentPlant.image} 
+                                    alt={currentPlant.name}
+                                    className="plant-image"
+                                    onError={(e) => {
+                                        e.target.style.display = 'none'
+                                        e.target.nextSibling.style.display = 'flex'
+                                    }}
+                                />
+                            ) : null}
+                            <div 
+                                className="no-image" 
+                                style={{ display: currentPlant.image ? 'none' : 'flex' }}
+                            >
+                                <IoLeafOutline />
+                            </div>
+                        </div>
+                        
+                        <div className="plant-details">
+                            <h2 className="plant-name">{currentPlant.name}</h2>
+                            {currentPlant.species && (
+                                <p className="plant-species">{currentPlant.species}</p>
+                            )}
+                            <div className="plant-location">
+                                <IoLocationOutline /> 
+                                {currentPlant.location || 'No especificada'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Filters and Controls */}
+                <div className="care-history-controls">
+                    <div className="filters-section">
+                        <div className="filter-group">
+                            <IoFilterOutline className="filter-icon" />
+                            <select 
+                                value={careHistoryFilter} 
+                                onChange={(e) => setCareHistoryFilter(e.target.value)}
+                                className="filter-select"
+                            >
+                                <option value="all">{content.filters.all}</option>
+                                <option value="completed">{content.filters.completed}</option>
+                                <option value="pending">{content.filters.pending}</option>
+                            </select>
+                        </div>
+                        
+                        <div className="filter-group">
+                            <IoSwapVerticalOutline className="filter-icon" />
+                            <select 
+                                value={careHistorySortBy} 
+                                onChange={(e) => setCareHistorySortBy(e.target.value)}
+                                className="filter-select"
+                            >
+                                <option value="date">{content.filters.date}</option>
+                                <option value="type">{content.filters.type}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button className="add-care-button">
+                        <IoAddOutline /> 
+                        <span className="not_responsive">{content.actions.addCare}</span>
+                    </button>
+                </div>
+
+                {/* Care History List */}
+                <div className="care-history-content">
+                    <h3 className="section-title">
+                        {content.careHistory.title} ({filteredAndSortedRecords.length})
+                    </h3>
+                    
+                    {filteredAndSortedRecords.length === 0 ? (
+                        <div className="empty-state">
+                            <IoSadOutline className="empty-icon" />
+                            <p className="empty-message">{content.careHistory.empty}</p>
+                            <p className="empty-suggestion">{content.careHistory.addFirst}</p>
+                        </div>
+                    ) : (
+                        <div className="care-records-list">
+                            {filteredAndSortedRecords.map((record) => {
+                                const typeInfo = getCareTypeInfo(record.careType)
+                                
+                                return (
+                                    <div key={record._id} className="care-record-card">
+                                        <div className="care-record-header">
+                                            <div className="care-type-info">
+                                                <div className={`care-type-icon ${typeInfo.className}`}>
+                                                    {typeInfo.icon}
+                                                </div>
+                                                <div className="care-type-details">
+                                                    <h4 className="care-type-name">
+                                                        {content.careTypes[record.careType]}
+                                                    </h4>
+                                                    <p className="care-description">
+                                                        {record.description || content.placeholders.noDescription}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="care-status">
+                                                {record.completed ? (
+                                                    <div className="status-completed">
+                                                        <IoCheckmarkCircleOutline />
+                                                        <span>{content.careRecord.completed}</span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="status-pending">
+                                                        <IoEllipseOutline />
+                                                        <span>{content.careRecord.pending}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="care-record-body">
+                                            {record.notes && (
+                                                <div className="care-notes">
+                                                    <IoDocumentTextOutline className="notes-icon" />
+                                                    <p>{record.notes}</p>
+                                                </div>
+                                            )}
+                                            
+                                            <div className="care-dates">
+                                                <div className="date-info">
+                                                    <IoCalendarOutline className="date-icon" />
+                                                    <div className="date-details">
+                                                        <span className="date-label">
+                                                            {record.completed ? content.careRecord.completedAt : content.careRecord.createdAt}
+                                                        </span>
+                                                        <span className="date-value">
+                                                            {formatDate(record.completed ? record.completedAt : record.createdAt)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                {record.nextDueDate && (
+                                                    <div className="date-info">
+                                                        <IoTimeOutline className="date-icon" />
+                                                        <div className="date-details">
+                                                            <span className="date-label">
+                                                                {content.careRecord.nextDue}
+                                                            </span>
+                                                            <span className="date-value">
+                                                                {formatDate(record.nextDueDate)}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        
+                                        {!record.completed && (
+                                            <div className="care-record-actions">
+                                                <button 
+                                                    className="action-button btn-primary"
+                                                    onClick={() => handleMarkCompleted(record._id)}
+                                                >
+                                                    <IoCheckmarkCircleOutline />
+                                                    <span className="not_responsive">
+                                                        {content.actions.markCompleted}
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default CareHistory

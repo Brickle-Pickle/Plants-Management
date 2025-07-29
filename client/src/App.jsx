@@ -9,6 +9,7 @@ import Dashboard from './user_pages/dashboard/dashboard.jsx'
 import Login from './user_pages/login/login.jsx'
 import Register from './user_pages/register/register.jsx'
 import Plants from './user_pages/plants/plants.jsx'
+import CareHistory from './user_pages/care-history/care_history.jsx'
 // import Reminders from './user_pages/reminders/reminders.jsx'
 // Modals
 import PlantsDelete from './user_pages/plants/plants_delete.jsx'
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/plants" element={<Plants />} />
+                <Route path="/care-history/:id" element={<CareHistory />} />
                 { /* <Route path="/reminders" element={<Reminders />} /> */ }
             </Routes>
 

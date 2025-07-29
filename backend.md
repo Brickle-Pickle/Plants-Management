@@ -43,19 +43,15 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 ```javascript
 {
     _id: ObjectId,
-    username: String,
     email: String,
     password: String, // hashed
-    firstName: String,
-    lastName: String,
     avatar: String,
     preferences: {
         notifications: Boolean,
         reminderTime: String, // "09:00"
         timezone: String
     },
-    createdAt: Date,
-    updatedAt: Date
+    createdAt: Date
 }
 ```
 
@@ -65,21 +61,16 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
     _id: ObjectId,
     userId: ObjectId, // ref to User
     name: String,
-    scientificName: String,
     species: String,
     location: String, // "Living room", "Balcony"
-    photos: [String], // URLs to images
-    careInstructions: {
-        wateringFrequency: Number, // days
-        sunlightRequirement: String, // "low", "medium", "high"
-        soilType: String,
-        fertilizingFrequency: Number, // days
+    photo: String, // URLs to images
+    info: {  
+        status: String, // "healthy", "needs_attention", "sick"
+        lastWatering: Date,
+        nextWatering: Date,
         notes: String
     },
-    status: String, // "healthy", "needs_attention", "sick"
-    acquiredDate: Date,
-    createdAt: Date,
-    updatedAt: Date
+    createdAt: Date
 }
 ```
 
@@ -91,7 +82,6 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
     userId: ObjectId, // ref to User
     careType: String, // "watering", "fertilizing", "pruning", "repotting"
     description: String,
-    photos: [String],
     nextDueDate: Date, // calculated based on frequency
     completed: Boolean,
     completedAt: Date,

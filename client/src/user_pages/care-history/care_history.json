@@ -1,0 +1,51 @@
+{
+    "pageTitle": "Historial de Cuidados",
+    "backButton": "Volver a Plantas",
+    "plantInfo": {
+        "title": "Información de la Planta",
+        "name": "Nombre",
+        "species": "Especie",
+        "location": "Ubicación"
+    },
+    "careHistory": {
+        "title": "Historial de Cuidados",
+        "empty": "No hay registros de cuidados para esta planta",
+        "addFirst": "Agrega el primer cuidado"
+    },
+    "careTypes": {
+        "watering": "Riego",
+        "fertilizing": "Fertilización",
+        "pruning": "Poda",
+        "repotting": "Trasplante"
+    },
+    "careRecord": {
+        "description": "Descripción",
+        "notes": "Notas",
+        "completed": "Completado",
+        "pending": "Pendiente",
+        "nextDue": "Próximo vencimiento",
+        "completedAt": "Completado el",
+        "createdAt": "Creado el"
+    },
+    "filters": {
+        "all": "Todos",
+        "completed": "Completados",
+        "pending": "Pendientes",
+        "sortBy": "Ordenar por",
+        "date": "Fecha",
+        "type": "Tipo"
+    },
+    "actions": {
+        "addCare": "Agregar Cuidado",
+        "markCompleted": "Marcar como Completado",
+        "edit": "Editar",
+        "delete": "Eliminar"
+    },
+    "placeholders": {
+        "noDescription": "Sin descripción",
+        "noNotes": "Sin notas adicionales",
+        "noDate": "Fecha no disponible"
+    },
+    "loading": "Cargando historial de cuidados...",
+    "error": "Error al cargar el historial de cuidados"
+}
