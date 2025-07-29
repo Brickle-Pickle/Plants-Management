@@ -15,7 +15,8 @@ const PlantsGrid = () => {
         fetchPlants,
         openViewModal,
         openEditModal,
-        openDeleteModal
+        openDeleteModal,
+        openAddModal
     } = useAppContext()
 
     // Fetch plants on component mount
@@ -82,10 +83,8 @@ const PlantsGrid = () => {
         return filtered
     }, [plants, plantsFilter, plantsSortBy])
 
-    // Handle add new plant (placeholder for future modal)
     const handleAddPlant = () => {
-        // #backend - will open add plant modal when implemented
-        console.log('Add new plant clicked')
+        openAddModal();
     }
 
     // Render loading state
@@ -191,7 +190,7 @@ const PlantsGrid = () => {
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
                             ) : (
-                                <span>🌱</span>
+                                <span></span>
                             )}
                         </div>
 

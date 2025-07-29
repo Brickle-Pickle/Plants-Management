@@ -1,0 +1,65 @@
+{
+    "title": "Agregar Nueva Planta",
+    "subtitle": "Registra una nueva planta en tu colección",
+    "form": {
+        "name": {
+            "label": "Nombre de la planta",
+            "placeholder": "Ej: Mi Monstera favorita"
+        },
+        "species": {
+            "label": "Especie",
+            "placeholder": "Ej: Monstera deliciosa"
+        },
+        "location": {
+            "label": "Ubicación",
+            "placeholder": "Ej: Sala de estar, Cocina, Dormitorio"
+        },
+        "status": {
+            "label": "Estado inicial de la planta",
+            "options": {
+                "healthy": "Saludable",
+                "needsWater": "Necesita agua",
+                "needsAttention": "Necesita atención",
+                "sick": "Enferma"
+            }
+        },
+        "lastWatered": {
+            "label": "Último riego"
+        },
+        "nextWatering": {
+            "label": "Próximo riego"
+        },
+        "notes": {
+            "label": "Notas adicionales",
+            "placeholder": "Observaciones sobre el cuidado, crecimiento, etc."
+        },
+        "image": {
+            "label": "Imagen de la planta",
+            "placeholder": "URL de la imagen o subir archivo",
+            "uploadText": "Subir imagen",
+            "changeText": "Cambiar imagen"
+        }
+    },
+    "buttons": {
+        "cancel": "Cancelar",
+        "add": "Agregar Planta",
+        "adding": "Agregando..."
+    },
+    "messages": {
+        "success": "Planta agregada exitosamente",
+        "error": "Error al agregar la planta. Inténtalo de nuevo.",
+        "validation": {
+            "nameRequired": "El nombre de la planta es obligatorio",
+            "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+            "speciesMinLength": "La especie debe tener al menos 2 caracteres",
+            "locationMinLength": "La ubicación debe tener al menos 2 caracteres",
+            "invalidDate": "Fecha inválida",
+            "futureLastWatered": "La fecha del último riego no puede ser futura",
+            "pastNextWatering": "La fecha del próximo riego no puede ser pasada"
+        }
+    },
+    "placeholders": {
+        "noImage": "Sin imagen",
+        "selectStatus": "Selecciona el estado"
+    }
+}

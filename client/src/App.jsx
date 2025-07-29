@@ -14,6 +14,7 @@ import Plants from './user_pages/plants/plants.jsx'
 import PlantsDelete from './user_pages/plants/plants_delete.jsx'
 import PlantsEdit from './user_pages/plants/plants_edit.jsx'
 import PlantsView from './user_pages/plants/plants_view.jsx'
+import PlantsAdd from './user_pages/plants/plants_add.jsx'
 
 function App() {
     const { location } = useAppContext();
@@ -28,6 +29,7 @@ function App() {
             <PlantsDelete />
             <PlantsEdit />
             <PlantsView />
+            <PlantsAdd />
 
             { /* Navbar */ }
             <Navbar />

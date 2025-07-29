@@ -34,6 +34,7 @@ export const AppProvider = ({ children }) => {
     const [isViewModalOpen, setIsViewModalOpen] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [selectedPlant, setSelectedPlant] = useState(null)
     
     // Grid View Settings
@@ -63,10 +64,15 @@ export const AppProvider = ({ children }) => {
         setIsDeleteModalOpen(true)
     }
 
+    const openAddModal = () => {
+        setIsAddModalOpen(true)
+    }
+
     const closeAllModals = () => {
         setIsViewModalOpen(false)
         setIsEditModalOpen(false)
         setIsDeleteModalOpen(false)
+        setIsAddModalOpen(false)
         setSelectedPlant(null)
     }
 
@@ -127,6 +133,41 @@ export const AppProvider = ({ children }) => {
             console.error('Error fetching plants:', error)
         } finally {
             setIsLoadingPlants(false)
+        }
+    }
+
+    const addPlant = async (plantData) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/plants POST
+            console.log('Adding plant:', plantData)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Generate new ID (in real app, this would come from backend)
+            const newId = Math.max(...plants.map(p => p.id), 0) + 1
+            
+            // Create new plant object
+            const newPlant = {
+                id: newId,
+                ...plantData,
+                lastWatered: plantData.lastWatered ? new Date(plantData.lastWatered) : null,
+                nextWatering: plantData.nextWatering ? new Date(plantData.nextWatering) : null
+            }
+            
+            // Add plant to local state
+            setPlants(prevPlants => [...prevPlants, newPlant])
+            closeAllModals()
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al agregar la planta')
+            console.error('Error adding plant:', error)
+            throw error
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -292,6 +333,8 @@ export const AppProvider = ({ children }) => {
         setIsEditModalOpen,
         isDeleteModalOpen,
         setIsDeleteModalOpen,
+        isAddModalOpen,
+        setIsAddModalOpen,
         selectedPlant,
         setSelectedPlant,
         
@@ -305,11 +348,13 @@ export const AppProvider = ({ children }) => {
         
         // Plants Functions
         fetchPlants,
+        addPlant,
         deletePlant,
         updatePlant,
         openViewModal,
         openEditModal,
         openDeleteModal,
+        openAddModal,
         closeAllModals,
         
         // Auth functions
