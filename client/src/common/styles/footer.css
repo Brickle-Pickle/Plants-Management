@@ -454,7 +454,7 @@
     }
     
     .footer__social-link {
-        background: rgba(38, 38, 38, 0.8);
+        background: rgba(38, 38, 38, 0.2);
         border-color: var(--color-neutral-700);
         color: var(--color-neutral-300);
     }

@@ -1,0 +1,20 @@
+{
+    "title": "Eliminar Planta",
+    "subtitle": "¿Estás seguro de que quieres eliminar esta planta?",
+    "warning": "Esta acción no se puede deshacer. Se eliminará permanentemente la planta y todo su historial de cuidados.",
+    "plantInfo": {
+        "name": "Nombre:",
+        "species": "Especie:",
+        "location": "Ubicación:",
+        "lastWatered": "Último riego:"
+    },
+    "buttons": {
+        "cancel": "Cancelar",
+        "delete": "Eliminar Planta",
+        "deleting": "Eliminando..."
+    },
+    "messages": {
+        "success": "Planta eliminada exitosamente",
+        "error": "Error al eliminar la planta. Inténtalo de nuevo."
+    }
+}

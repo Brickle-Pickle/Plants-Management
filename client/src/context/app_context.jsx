@@ -25,10 +25,162 @@ export const AppProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false) // Global loading state
     const [error, setError] = useState(null) // Global error state
 
+    // Plants Grid State Variables
+    const [plants, setPlants] = useState([]) // #backend - will be populated from API
+    const [isLoadingPlants, setIsLoadingPlants] = useState(false)
+    const [plantsError, setPlantsError] = useState(null)
+    
+    // Modal State Variables for Plants Grid
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [selectedPlant, setSelectedPlant] = useState(null)
+    
+    // Grid View Settings
+    const [gridViewMode, setGridViewMode] = useState('grid') // 'grid' or 'list'
+    const [plantsFilter, setPlantsFilter] = useState('all') // 'all', 'healthy', 'needsWater', 'needsAttention', 'sick'
+    const [plantsSortBy, setPlantsSortBy] = useState('name') // 'name', 'lastWatered', 'nextWatering', 'status'
+
     // Navigation functions
     const navigateTo = (path) => {
         navigate(path)
         setIsMobileMenuOpen(false) // Close mobile menu on navigation
+    }
+
+    // Plants Grid Functions
+    const openViewModal = (plant) => {
+        setSelectedPlant(plant)
+        setIsViewModalOpen(true)
+    }
+
+    const openEditModal = (plant) => {
+        setSelectedPlant(plant)
+        setIsEditModalOpen(true)
+    }
+
+    const openDeleteModal = (plant) => {
+        setSelectedPlant(plant)
+        setIsDeleteModalOpen(true)
+    }
+
+    const closeAllModals = () => {
+        setIsViewModalOpen(false)
+        setIsEditModalOpen(false)
+        setIsDeleteModalOpen(false)
+        setSelectedPlant(null)
+    }
+
+    // Plants CRUD Functions (simulated for now)
+    const fetchPlants = async () => {
+        try {
+            setIsLoadingPlants(true)
+            setPlantsError(null)
+            
+            // #backend - will connect to /api/plants
+            console.log('Fetching plants...')
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Simulate plants data
+            const mockPlants = [
+                {
+                    id: 1,
+                    name: "Monstera Deliciosa",
+                    species: "Monstera deliciosa",
+                    image: "/monstera.png",
+                    location: "Sala de estar",
+                    status: "healthy",
+                    lastWatered: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+                    nextWatering: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // in 5 days
+                    notes: "Planta muy saludable, creciendo bien"
+                },
+                {
+                    id: 2,
+                    name: "Pothos Dorado",
+                    species: "Epipremnum aureum",
+                    image: "/pothos.png",
+                    location: "Cocina",
+                    status: "needsWater",
+                    lastWatered: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+                    nextWatering: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day overdue
+                    notes: "Necesita riego urgente"
+                },
+                {
+                    id: 3,
+                    name: "Sansevieria",
+                    species: "Sansevieria trifasciata",
+                    image: "/images/plants/sansevieria.jpg",
+                    location: "Dormitorio",
+                    status: "healthy",
+                    lastWatered: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), // 14 days ago
+                    nextWatering: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // in 7 days
+                    notes: "Planta resistente, muy fácil de cuidar"
+                }
+            ]
+            
+            setPlants(mockPlants)
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setPlantsError('Error al cargar las plantas')
+            console.error('Error fetching plants:', error)
+        } finally {
+            setIsLoadingPlants(false)
+        }
+    }
+
+    const deletePlant = async (plantId) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/plants/:id DELETE
+            console.log('Deleting plant:', plantId)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 500))
+            
+            // Remove plant from local state
+            setPlants(prevPlants => prevPlants.filter(plant => plant.id !== plantId))
+            closeAllModals()
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al eliminar la planta')
+            console.error('Error deleting plant:', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const updatePlant = async (plantId, updatedData) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/plants/:id PUT
+            console.log('Updating plant:', plantId, updatedData)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 800))
+            
+            // Update plant in local state
+            setPlants(prevPlants => 
+                prevPlants.map(plant => 
+                    plant.id === plantId 
+                        ? { ...plant, ...updatedData }
+                        : plant
+                )
+            )
+            closeAllModals()
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al actualizar la planta')
+            console.error('Error updating plant:', error)
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     // Auth functions (simulated for now)
@@ -103,6 +255,7 @@ export const AppProvider = ({ children }) => {
     // Clear error function
     const clearError = () => {
         setError(null)
+        setPlantsError(null)
     }
 
     // Context value with navigate and location
@@ -123,6 +276,41 @@ export const AppProvider = ({ children }) => {
         error,
         setError,
         clearError,
+        
+        // Plants Grid State
+        plants,
+        setPlants,
+        isLoadingPlants,
+        setIsLoadingPlants,
+        plantsError,
+        setPlantsError,
+        
+        // Modal State
+        isViewModalOpen,
+        setIsViewModalOpen,
+        isEditModalOpen,
+        setIsEditModalOpen,
+        isDeleteModalOpen,
+        setIsDeleteModalOpen,
+        selectedPlant,
+        setSelectedPlant,
+        
+        // Grid Settings
+        gridViewMode,
+        setGridViewMode,
+        plantsFilter,
+        setPlantsFilter,
+        plantsSortBy,
+        setPlantsSortBy,
+        
+        // Plants Functions
+        fetchPlants,
+        deletePlant,
+        updatePlant,
+        openViewModal,
+        openEditModal,
+        openDeleteModal,
+        closeAllModals,
         
         // Auth functions
         login,

@@ -1,0 +1,386 @@
+.plants_grid {
+    padding: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.plants_grid__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-2xl);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.plants_grid__title {
+    font-family: var(--ff-primary);
+    font-size: var(--text-3xl);
+    color: var(--color-primary-700);
+    margin: 0;
+}
+
+.plants_grid__subtitle {
+    font-family: var(--ff-secondary);
+    font-size: var(--text-lg);
+    color: var(--color-neutral-600);
+    margin: var(--spacing-xs) 0 0 0;
+}
+
+.plants_grid__controls {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.plants_grid__add_button {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-family: var(--ff-secondary);
+    font-weight: var(--font-medium);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.plants_grid__add_button:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.plants_grid__filter_select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.plants_grid__filter_select:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+}
+
+.plants_grid__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-3xl);
+    font-family: var(--ff-secondary);
+    color: var(--color-neutral-600);
+    font-size: var(--text-lg);
+}
+
+.plants_grid__error {
+    background: var(--color-error);
+    color: white;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-family: var(--ff-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.plants_grid__empty {
+    text-align: center;
+    padding: var(--spacing-3xl);
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--card-border);
+}
+
+.plants_grid__empty_title {
+    font-family: var(--ff-primary);
+    font-size: var(--text-2xl);
+    color: var(--color-neutral-700);
+    margin-bottom: var(--spacing-md);
+}
+
+.plants_grid__empty_description {
+    font-family: var(--ff-secondary);
+    color: var(--color-neutral-600);
+    margin-bottom: var(--spacing-xl);
+    line-height: var(--leading-relaxed);
+}
+
+.plants_grid__empty_button {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-md);
+    font-family: var(--ff-secondary);
+    font-weight: var(--font-medium);
+    font-size: var(--text-base);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+}
+
+.plants_grid__empty_button:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.plants_grid__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+}
+
+.plants_grid__card {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--card-border);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.plants_grid__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.plants_grid__card_image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: var(--color-primary-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary-400);
+    font-size: var(--text-4xl);
+}
+
+.plants_grid__card_content {
+    padding: var(--spacing-lg);
+}
+
+.plants_grid__card_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+}
+
+.plants_grid__card_name {
+    font-family: var(--ff-primary);
+    font-size: var(--text-xl);
+    color: var(--color-neutral-800);
+    margin: 0;
+    line-height: var(--leading-tight);
+}
+
+.plants_grid__card_species {
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-600);
+    font-style: italic;
+    margin: var(--spacing-xs) 0 0 0;
+}
+
+.plants_grid__card_status {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-family: var(--ff-secondary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plants_grid__card_status--healthy {
+    background: var(--color-primary-100);
+    color: var(--color-primary-700);
+}
+
+.plants_grid__card_status--needsWater {
+    background: var(--color-warning);
+    color: white;
+}
+
+.plants_grid__card_status--needsAttention {
+    background: var(--color-secondary-200);
+    color: var(--color-secondary-800);
+}
+
+.plants_grid__card_status--sick {
+    background: var(--color-error);
+    color: white;
+}
+
+.plants_grid__card_info {
+    margin-bottom: var(--spacing-lg);
+}
+
+.plants_grid__card_info_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+}
+
+.plants_grid__card_info_label {
+    color: var(--color-neutral-600);
+    font-weight: var(--font-medium);
+}
+
+.plants_grid__card_info_value {
+    color: var(--color-neutral-800);
+}
+
+.plants_grid__card_actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+}
+
+.plants_grid__card_button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--ff-secondary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plants_grid__card_button--view {
+    background: var(--color-info);
+    color: white;
+}
+
+.plants_grid__card_button--view:hover {
+    background: var(--color-accent-blue);
+    transform: translateY(-1px);
+}
+
+.plants_grid__card_button--edit {
+    background: var(--color-secondary-500);
+    color: white;
+}
+
+.plants_grid__card_button--edit:hover {
+    background: var(--color-secondary-600);
+    transform: translateY(-1px);
+}
+
+.plants_grid__card_button--delete {
+    background: var(--color-error);
+    color: white;
+}
+
+.plants_grid__card_button--delete:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .plants_grid {
+        padding: var(--spacing-md);
+    }
+    
+    .plants_grid__header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .plants_grid__controls {
+        justify-content: center;
+    }
+    
+    .plants_grid__container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    .plants_grid__card_actions {
+        justify-content: center;
+    }
+    
+    .plants_grid__title {
+        font-size: var(--text-2xl);
+    }
+}
+
+@media (max-width: 480px) {
+    .plants_grid__card_content {
+        padding: var(--spacing-md);
+    }
+    
+    .plants_grid__card_header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+    
+    .plants_grid__card_actions {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .plants_grid__card_button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Animation for loading state */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.plants_grid__loading {
+    animation: pulse 2s infinite;
+}
+
+/* Smooth transitions for grid changes */
+.plants_grid__container {
+    transition: all var(--transition-normal);
+}
+
+.plants_grid__card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "title": "Mis Plantas",
+    "subtitle": "Gestiona tu colección de plantas",
+    "emptyState": {
+        "title": "No tienes plantas registradas",
+        "description": "Comienza agregando tu primera planta para empezar a gestionar tu jardín",
+        "buttonText": "Agregar Primera Planta"
+    },
+    "buttons": {
+        "view": "Ver",
+        "edit": "Editar", 
+        "delete": "Eliminar",
+        "addNew": "Agregar Planta"
+    },
+    "plantCard": {
+        "lastWatered": "Último riego:",
+        "nextWatering": "Próximo riego:",
+        "status": "Estado:",
+        "location": "Ubicación:",
+        "daysAgo": "hace {{days}} días",
+        "today": "hoy",
+        "inDays": "en {{days}} días"
+    },
+    "status": {
+        "healthy": "Saludable",
+        "needsWater": "Necesita agua",
+        "needsAttention": "Necesita atención",
+        "sick": "Enferma"
+    },
+    "loading": "Cargando plantas...",
+    "error": "Error al cargar las plantas"
+}

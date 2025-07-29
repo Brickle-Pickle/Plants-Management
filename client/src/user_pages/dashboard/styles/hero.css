@@ -245,7 +245,7 @@
     align-items: center;
     gap: var(--spacing-md);
     padding: var(--spacing-md) var(--spacing-lg);
-    background: rgba(255, 255, 255, 0.849);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(15px);
     border-radius: var(--radius-xl);
     border: 1px solid rgba(255, 255, 255, 0.25);
