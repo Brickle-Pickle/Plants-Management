@@ -114,12 +114,12 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 ### Fase 1: Configuración Inicial (Semana 1)
 
 #### Día 1-2: Setup del Proyecto
-- [ ] Inicializar proyecto Node.js
-- [ ] Configurar Express.js básico
-- [ ] Setup de MongoDB y Mongoose
-- [ ] Configurar variables de entorno
-- [ ] Estructura de carpetas
-- [ ] Configurar ESLint y Prettier
+- [X] Inicializar proyecto Node.js
+- [X] Configurar Express.js básico
+- [X] Setup de MongoDB y Mongoose
+- [X] Configurar variables de entorno
+- [X] Estructura de carpetas
+- [X] Configurar ESLint y Prettier
 
 #### Día 3-4: Autenticación Base
 - [ ] Modelo de Usuario
