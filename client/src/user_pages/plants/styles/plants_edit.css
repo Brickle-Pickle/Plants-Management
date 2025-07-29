@@ -28,6 +28,10 @@
     border: 1px solid var(--card-border);
 }
 
+.plant_edit__content::-webkit-scrollbar {
+    display: none;
+}
+
 /* Header */
 .plant_edit__header {
     display: flex;

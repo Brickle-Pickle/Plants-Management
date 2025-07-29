@@ -110,7 +110,7 @@ export const AppProvider = ({ children }) => {
                     id: 3,
                     name: "Sansevieria",
                     species: "Sansevieria trifasciata",
-                    image: "/images/plants/sansevieria.jpg",
+                    image: "/sansevieria.png",
                     location: "Dormitorio",
                     status: "healthy",
                     lastWatered: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), // 14 days ago

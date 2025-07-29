@@ -26,7 +26,6 @@ A continuación se describen los componentes principales que corresponden a cada
 - **`Login`** (Ruta `/login`): Formulario para autenticación de usuarios.
 - **`Register`** (Ruta `/register`): Formulario para registro de nuevos usuarios.
 - **`PlantsList`** (Ruta `/plants`): Lista de plantas del usuario con opciones para ver, editar o eliminar.
-- **`PlantDetail`** (Ruta `/plants/:id`): Detalle completo de una planta, incluyendo fotos, estado y cuidados.
 - **`CareHistory`** (Ruta `/care-history/:plantId`): Historial de cuidados realizados a una planta específica.
 - **`Reminders`** (Ruta `/reminders`): Lista y gestión de recordatorios de cuidados.
 

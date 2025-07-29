@@ -13,6 +13,7 @@ import Plants from './user_pages/plants/plants.jsx'
 // Modals
 import PlantsDelete from './user_pages/plants/plants_delete.jsx'
 import PlantsEdit from './user_pages/plants/plants_edit.jsx'
+import PlantsView from './user_pages/plants/plants_view.jsx'
 
 function App() {
     const { location } = useAppContext();
@@ -26,6 +27,7 @@ function App() {
             { /* Modals */ }
             <PlantsDelete />
             <PlantsEdit />
+            <PlantsView />
 
             { /* Navbar */ }
             <Navbar />

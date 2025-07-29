@@ -1,0 +1,35 @@
+{
+    "modal": {
+        "title": "Información de la Planta",
+        "close": "Cerrar",
+        "careHistory": "Ver Historial de Cuidados",
+        "edit": "Editar Planta",
+        "delete": "Eliminar Planta"
+    },
+    "plantInfo": {
+        "name": "Nombre",
+        "species": "Especie",
+        "location": "Ubicación",
+        "status": "Estado",
+        "lastWatered": "Último Riego",
+        "nextWatering": "Próximo Riego",
+        "notes": "Notas",
+        "plantedDate": "Fecha de Plantado",
+        "careFrequency": "Frecuencia de Cuidado"
+    },
+    "status": {
+        "healthy": "Saludable",
+        "needsWater": "Necesita Agua",
+        "needsAttention": "Necesita Atención",
+        "sick": "Enferma"
+    },
+    "actions": {
+        "waterNow": "Regar Ahora",
+        "markAsHealthy": "Marcar como Saludable",
+        "addNote": "Agregar Nota"
+    },
+    "placeholders": {
+        "noNotes": "No hay notas disponibles para esta planta.",
+        "noImage": "Sin imagen disponible"
+    }
+}
