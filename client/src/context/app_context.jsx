@@ -44,6 +44,19 @@ export const AppProvider = ({ children }) => {
     const [careHistoryFilter, setCareHistoryFilter] = useState('all') // 'all', 'completed', 'pending'
     const [careHistorySortBy, setCareHistorySortBy] = useState('date') // 'date', 'type'
     
+    // Reminders State Variables
+    const [reminders, setReminders] = useState([]) // #backend - will be populated from API
+    const [isLoadingReminders, setIsLoadingReminders] = useState(false)
+    const [remindersError, setRemindersError] = useState(null)
+    const [remindersFilter, setRemindersFilter] = useState('all') // 'all', 'pending', 'completed', 'overdue'
+    const [remindersSortBy, setRemindersSortBy] = useState('date') // 'date', 'type', 'plant'
+    const [selectedReminder, setSelectedReminder] = useState(null)
+    
+    // Reminder Modal State Variables
+    const [isReminderAddModalOpen, setIsReminderAddModalOpen] = useState(false)
+    const [isReminderEditModalOpen, setIsReminderEditModalOpen] = useState(false)
+    const [isReminderDeleteModalOpen, setIsReminderDeleteModalOpen] = useState(false)
+    
     // Grid View Settings
     const [gridViewMode, setGridViewMode] = useState('grid') // 'grid' or 'list'
     const [plantsFilter, setPlantsFilter] = useState('all') // 'all', 'healthy', 'needsWater', 'needsAttention', 'sick'
@@ -81,6 +94,26 @@ export const AppProvider = ({ children }) => {
         setIsDeleteModalOpen(false)
         setIsAddModalOpen(false)
         setSelectedPlant(null)
+        // Close reminder modals
+        setIsReminderAddModalOpen(false)
+        setIsReminderEditModalOpen(false)
+        setIsReminderDeleteModalOpen(false)
+        setSelectedReminder(null)
+    }
+
+    // Reminder Modal Functions
+    const openReminderAddModal = () => {
+        setIsReminderAddModalOpen(true)
+    }
+
+    const openReminderEditModal = (reminder) => {
+        setSelectedReminder(reminder)
+        setIsReminderEditModalOpen(true)
+    }
+
+    const openReminderDeleteModal = (reminder) => {
+        setSelectedReminder(reminder)
+        setIsReminderDeleteModalOpen(true)
     }
 
     // Plants CRUD Functions (simulated for now)
@@ -304,6 +337,7 @@ export const AppProvider = ({ children }) => {
     const clearError = () => {
         setError(null)
         setPlantsError(null)
+        setRemindersError(null)
     }
 
     // Care History Functions
@@ -431,6 +465,216 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    // Reminders Functions
+    const fetchReminders = async () => {
+        try {
+            setIsLoadingReminders(true)
+            setRemindersError(null)
+            
+            // #backend - will connect to /api/reminders
+            console.log('Fetching reminders...')
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Simulate reminders data
+            const mockReminders = [
+                {
+                    _id: '1',
+                    plantId: 1,
+                    userId: 'user1',
+                    careType: 'watering',
+                    scheduledDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // tomorrow
+                    isRecurring: true,
+                    frequency: 7, // every 7 days
+                    status: 'pending',
+                    notificationSent: false,
+                    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                    updatedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                },
+                {
+                    _id: '2',
+                    plantId: 2,
+                    userId: 'user1',
+                    careType: 'watering',
+                    scheduledDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // yesterday (overdue)
+                    isRecurring: true,
+                    frequency: 5, // every 5 days
+                    status: 'overdue',
+                    notificationSent: true,
+                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+                    updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
+                },
+                {
+                    _id: '3',
+                    plantId: 1,
+                    userId: 'user1',
+                    careType: 'fertilizing',
+                    scheduledDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // in 15 days
+                    isRecurring: true,
+                    frequency: 30, // every 30 days
+                    status: 'pending',
+                    notificationSent: false,
+                    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+                    updatedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
+                },
+                {
+                    _id: '4',
+                    plantId: 3,
+                    userId: 'user1',
+                    careType: 'pruning',
+                    scheduledDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // in 3 days
+                    isRecurring: false,
+                    frequency: 0,
+                    status: 'pending',
+                    notificationSent: false,
+                    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+                    updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+                },
+                {
+                    _id: '5',
+                    plantId: 2,
+                    userId: 'user1',
+                    careType: 'fertilizing',
+                    scheduledDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+                    isRecurring: false,
+                    frequency: 0,
+                    status: 'completed',
+                    notificationSent: true,
+                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+                    updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
+                }
+            ]
+            
+            setReminders(mockReminders)
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setRemindersError('Error al cargar los recordatorios')
+            console.error('Error fetching reminders:', error)
+        } finally {
+            setIsLoadingReminders(false)
+        }
+    }
+
+    const addReminder = async (reminderData) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/reminders POST
+            console.log('Adding reminder:', reminderData)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 800))
+            
+            // Generate new ID (in real app, this would come from backend)
+            const newId = Math.max(...reminders.map(r => parseInt(r._id)), 0) + 1
+            
+            // Create new reminder object
+            const newReminder = {
+                _id: newId.toString(),
+                ...reminderData,
+                status: 'pending',
+                notificationSent: false,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+            
+            // Add reminder to local state
+            setReminders(prevReminders => [...prevReminders, newReminder])
+            closeAllModals()
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al agregar el recordatorio')
+            console.error('Error adding reminder:', error)
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const updateReminder = async (reminderId, updatedData) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/reminders/:id PUT
+            console.log('Updating reminder:', reminderId, updatedData)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 600))
+            
+            // Update reminder in local state
+            setReminders(prevReminders => 
+                prevReminders.map(reminder => 
+                    reminder._id === reminderId 
+                        ? { ...reminder, ...updatedData, updatedAt: new Date() }
+                        : reminder
+                )
+            )
+            closeAllModals()
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al actualizar el recordatorio')
+            console.error('Error updating reminder:', error)
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const deleteReminder = async (reminderId) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/reminders/:id DELETE
+            console.log('Deleting reminder:', reminderId)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 500))
+            
+            // Remove reminder from local state
+            setReminders(prevReminders => prevReminders.filter(reminder => reminder._id !== reminderId))
+            closeAllModals()
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al eliminar el recordatorio')
+            console.error('Error deleting reminder:', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const completeReminder = async (reminderId) => {
+        try {
+            setIsLoading(true)
+            
+            // #backend - will connect to /api/reminders/:id/complete PUT
+            console.log('Completing reminder:', reminderId)
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 600))
+            
+            // Update reminder status to completed
+            setReminders(prevReminders => 
+                prevReminders.map(reminder => 
+                    reminder._id === reminderId 
+                        ? { ...reminder, status: 'completed', updatedAt: new Date() }
+                        : reminder
+                )
+            )
+            
+        } catch (error) {
+            // #backend - will handle API errors
+            setError('Error al completar el recordatorio')
+            console.error('Error completing reminder:', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     // Context value with navigate and location
     const contextValue = {
         // Navigation
@@ -470,6 +714,20 @@ export const AppProvider = ({ children }) => {
         careHistorySortBy,
         setCareHistorySortBy,
         
+        // Reminders State
+        reminders,
+        setReminders,
+        isLoadingReminders,
+        setIsLoadingReminders,
+        remindersError,
+        setRemindersError,
+        remindersFilter,
+        setRemindersFilter,
+        remindersSortBy,
+        setRemindersSortBy,
+        selectedReminder,
+        setSelectedReminder,
+        
         // Modal State
         isViewModalOpen,
         setIsViewModalOpen,
@@ -481,6 +739,14 @@ export const AppProvider = ({ children }) => {
         setIsAddModalOpen,
         selectedPlant,
         setSelectedPlant,
+        
+        // Reminder Modal State
+        isReminderAddModalOpen,
+        setIsReminderAddModalOpen,
+        isReminderEditModalOpen,
+        setIsReminderEditModalOpen,
+        isReminderDeleteModalOpen,
+        setIsReminderDeleteModalOpen,
         
         // Grid Settings
         gridViewMode,
@@ -501,10 +767,22 @@ export const AppProvider = ({ children }) => {
         openAddModal,
         closeAllModals,
         
+        // Reminder Modal Functions
+        openReminderAddModal,
+        openReminderEditModal,
+        openReminderDeleteModal,
+        
         // Care History Functions
         fetchCareHistory,
         addCareRecord,
         updateCareRecord,
+        
+        // Reminders Functions
+        fetchReminders,
+        addReminder,
+        updateReminder,
+        deleteReminder,
+        completeReminder,
         
         // Auth functions
         login,

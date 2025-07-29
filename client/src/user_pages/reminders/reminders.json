@@ -1,0 +1,90 @@
+{
+    "title": "Recordatorios",
+    "subtitle": "Gestiona todos tus recordatorios de cuidado de plantas",
+    "buttons": {
+        "addReminder": "Nuevo Recordatorio",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "complete": "Completar",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "confirm": "Confirmar"
+    },
+    "filters": {
+        "all": "Todos",
+        "pending": "Pendientes",
+        "completed": "Completados",
+        "overdue": "Vencidos"
+    },
+    "sortOptions": {
+        "date": "Fecha",
+        "type": "Tipo de Cuidado",
+        "plant": "Planta"
+    },
+    "careTypes": {
+        "watering": "Riego",
+        "fertilizing": "Fertilización",
+        "pruning": "Poda",
+        "repotting": "Trasplante"
+    },
+    "status": {
+        "pending": "Pendiente",
+        "completed": "Completado",
+        "overdue": "Vencido"
+    },
+    "labels": {
+        "plant": "Planta",
+        "careType": "Tipo de Cuidado",
+        "scheduledDate": "Fecha Programada",
+        "isRecurring": "Recurrente",
+        "frequency": "Frecuencia (días)",
+        "status": "Estado",
+        "createdAt": "Creado",
+        "updatedAt": "Actualizado",
+        "daysUntil": "días",
+        "today": "Hoy",
+        "tomorrow": "Mañana",
+        "yesterday": "Ayer",
+        "daysAgo": "hace",
+        "in": "en",
+        "overdue": "vencido"
+    },
+    "placeholders": {
+        "selectPlant": "Selecciona una planta",
+        "selectCareType": "Selecciona tipo de cuidado",
+        "enterFrequency": "Ingresa frecuencia en días"
+    },
+    "messages": {
+        "noReminders": "No tienes recordatorios aún",
+        "noRemindersDescription": "Crea tu primer recordatorio para mantener tus plantas saludables",
+        "noRemindersFiltered": "No hay recordatorios que coincidan con los filtros seleccionados",
+        "loadingReminders": "Cargando recordatorios...",
+        "errorLoadingReminders": "Error al cargar los recordatorios",
+        "reminderCompleted": "Recordatorio completado exitosamente",
+        "reminderDeleted": "Recordatorio eliminado exitosamente",
+        "reminderCreated": "Recordatorio creado exitosamente",
+        "reminderUpdated": "Recordatorio actualizado exitosamente"
+    },
+    "modals": {
+        "add": {
+            "title": "Nuevo Recordatorio",
+            "description": "Crea un nuevo recordatorio para el cuidado de tus plantas"
+        },
+        "edit": {
+            "title": "Editar Recordatorio",
+            "description": "Modifica los detalles del recordatorio"
+        },
+        "delete": {
+            "title": "Eliminar Recordatorio",
+            "description": "¿Estás seguro de que quieres eliminar este recordatorio?",
+            "warning": "Esta acción no se puede deshacer."
+        }
+    },
+    "validation": {
+        "plantRequired": "Debes seleccionar una planta",
+        "careTypeRequired": "Debes seleccionar un tipo de cuidado",
+        "dateRequired": "Debes seleccionar una fecha",
+        "frequencyRequired": "La frecuencia es requerida para recordatorios recurrentes",
+        "frequencyMin": "La frecuencia debe ser al menos 1 día"
+    }
+}
