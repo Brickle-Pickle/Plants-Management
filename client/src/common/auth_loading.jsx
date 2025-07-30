@@ -1,4 +1,5 @@
 import React from 'react'
+import './styles/auth_loading.css'
 
 const AuthLoading = () => {
     return (
