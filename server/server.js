@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import authRoutes from './controllers/auth.js';
 
 dotenv.config();
 
@@ -8,6 +10,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.send('Plant management system working!');

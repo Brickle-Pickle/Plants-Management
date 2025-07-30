@@ -384,6 +384,9 @@
 
 .register__checkbox-text {
     flex: 1;
+    color: var(--color-warning);
+    align-items: center;
+    justify-content: center;
 }
 
 /* Submit button */
@@ -748,7 +751,9 @@
     }
     
     .register__checkbox-label {
+        display: flex;
         align-items: flex-start;
+        justify-content: center;
     }
 }
 

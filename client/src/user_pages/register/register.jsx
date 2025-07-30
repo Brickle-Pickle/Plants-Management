@@ -131,7 +131,6 @@ const Register = () => {
         setIsLoading(true)
         
         try {
-            // #backend - will send user data to API
             await register(formData)
             // Success handled by context and redirect
         } catch (error) {

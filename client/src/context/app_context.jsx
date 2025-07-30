@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 // Create the context
 const AppContext = createContext()
@@ -270,26 +271,21 @@ export const AppProvider = ({ children }) => {
             setIsLoading(true)
             setError(null)
             
-            // #backend - will connect to /api/auth/login
-            console.log('Login attempt:', credentials)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1500))
-            
-            // Simulate successful login
-            setIsAuthenticated(true)
-            setUser({ 
-                name: 'Usuario Demo',
-                email: credentials.email 
-            })
+            const response = await axios.post('/api/auth/login', credentials);
+
+            localStorage.setItem('token', response.data.token);
+
+            setIsAuthenticated(true);
+            setUser ({ email: credentials.email });
             
             // Navigate to dashboard after successful login
             navigate('/')
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al iniciar sesión. Inténtalo de nuevo.')
-            throw error
+            // Handle API errors properly
+            const errorMessage = error.response?.data?.msg || 'Error al iniciar sesión. Inténtalo de nuevo.'
+            setError(errorMessage)
+            throw new Error(errorMessage)
         } finally {
             setIsLoading(false)
         }
@@ -300,26 +296,20 @@ export const AppProvider = ({ children }) => {
             setIsLoading(true)
             setError(null)
             
-            // #backend - will connect to /api/auth/register
-            console.log('Register attempt:', userData)
+            const response = await axios.post('/api/auth/register', userData);
+            localStorage.setItem('token', response.data.token);
             
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 2000))
-            
-            // Simulate successful registration
-            setIsAuthenticated(true)
-            setUser({ 
-                name: 'Usuario Demo',
-                email: userData.email 
-            })
+            setIsAuthenticated(true);
+            setUser({ email: userData.email })
             
             // Navigate to dashboard after successful registration
             navigate('/')
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al crear la cuenta. Inténtalo de nuevo.')
-            throw error
+            // Handle API errors properly
+            const errorMessage = error.response?.data?.msg || 'Error al crear la cuenta. Inténtalo de nuevo.'
+            setError(errorMessage)
+            throw new Error(errorMessage)
         } finally {
             setIsLoading(false)
         }

@@ -94,11 +94,9 @@ const Login = () => {
         setIsLoading(true)
         
         try {
-            // #backend - will send credentials to API
             await login(formData)
             // Success handled by context and redirect
         } catch (error) {
-            // #backend - will handle API errors
             setErrors({ general: loginContent.messages.error })
         } finally {
             setIsLoading(false)
