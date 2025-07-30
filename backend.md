@@ -131,7 +131,7 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 ### Fase 2: Gestión de Plantas (Semana 2)
 
 #### Día 8-10: CRUD de Plantas
-- [ ] Modelo de Plant
+- [X] Modelo de Plant
 - [ ] Endpoint para crear planta
 - [ ] Endpoint para listar plantas del usuario
 - [ ] Endpoint para obtener planta específica

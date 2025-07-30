@@ -67,6 +67,18 @@ export const AppProvider = ({ children }) => {
         checkAuthStatus()
     }, [])
 
+    // Configure axios with token when authentication state changes
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token && isAuthenticated) {
+            // Set default authorization header for all axios requests
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        } else {
+            // Remove authorization header if no token or not authenticated
+            delete axios.defaults.headers.common['Authorization'];
+        }
+    }, [isAuthenticated]);
+
     // Navigation functions
     const navigateTo = (path) => {
         navigate(path)
@@ -190,14 +202,10 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/plants POST
-            console.log('Adding plant:', plantData)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            const response = await axios.post('/api/plants/create', plantData);
             
             // Generate new ID (in real app, this would come from backend)
-            const newId = Math.max(...plants.map(p => p.id), 0) + 1
+            const newId = response.data._id
             
             // Create new plant object
             const newPlant = {
@@ -236,9 +244,9 @@ export const AppProvider = ({ children }) => {
             closeAllModals()
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al eliminar la planta')
-            console.error('Error deleting plant:', error)
+            const errorMessage = error.response?.data?.msg || 'Error al eliminar la planta'
+            setError(errorMessage)
+            console.error('Error deleting plant:', errorMessage)
         } finally {
             setIsLoading(false)
         }
@@ -283,6 +291,9 @@ export const AppProvider = ({ children }) => {
             const response = await axios.post('/api/auth/login', credentials);
 
             localStorage.setItem('token', response.data.token);
+            
+            // Set axios default header immediately after login
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
             setIsAuthenticated(true);
             setUser ({ email: credentials.email });
@@ -307,6 +318,9 @@ export const AppProvider = ({ children }) => {
             
             const response = await axios.post('/api/auth/register', userData);
             localStorage.setItem('token', response.data.token);
+            
+            // Set axios default header immediately after registration
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
             
             setIsAuthenticated(true);
             setUser({ email: userData.email })
@@ -686,7 +700,7 @@ export const AppProvider = ({ children }) => {
     const checkAuthStatus = async () => {
         try {
             setIsLoading(true);
-
+    
             // Get token from localStorage
             const token = localStorage.getItem('token');
             
@@ -694,19 +708,21 @@ export const AppProvider = ({ children }) => {
                 setIsAuthenticated(false);
                 return;
             }
-
-            const response = await axios.get('/api/auth/profile', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
+    
+            // Set axios default header before making the request
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    
+            const response = await axios.get('/api/auth/profile');
+    
             setUser({ email: response.data.email });
             setIsAuthenticated(true);
+            
         } catch (error) {
-            console.log('Error checking auth status:', error);
-            setIsAuthenticated(false);
+            console.error('Auth check failed:', error);
+            // Clear invalid token
             localStorage.removeItem('token');
+            delete axios.defaults.headers.common['Authorization'];
+            setIsAuthenticated(false);
             setUser(null);
         } finally {
             setIsLoading(false);

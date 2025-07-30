@@ -1,7 +1,7 @@
-import User from '../models/Users';
+import User from '../models/Users.js'; // Fix import extension
 import jwt from 'jsonwebtoken';
 
-exports.protect = async (req, res, next) => {
+export const protect = async (req, res, next) => {
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
