@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 
@@ -63,6 +63,10 @@ export const AppProvider = ({ children }) => {
     const [plantsFilter, setPlantsFilter] = useState('all') // 'all', 'healthy', 'needsWater', 'needsAttention', 'sick'
     const [plantsSortBy, setPlantsSortBy] = useState('name') // 'name', 'lastWatered', 'nextWatering', 'status'
 
+    useEffect(() => {
+        checkAuthStatus()
+    }, [])
+
     // Navigation functions
     const navigateTo = (path) => {
         navigate(path)
@@ -118,8 +122,8 @@ export const AppProvider = ({ children }) => {
     }
 
     const getUserName = () => {
-        let name = user?.email.split('@')[0]
-        return name.charAt(0).toUpperCase() + name.slice(1)
+        let name = user?.email?.split('@')[0]
+        return name?.charAt(0).toUpperCase() + name?.slice(1)
     }
 
     // Plants CRUD Functions (simulated for now)
@@ -321,10 +325,18 @@ export const AppProvider = ({ children }) => {
     }
 
     const logout = () => {
-        // #backend - will clear tokens and call logout endpoint
+        // Clear token from localStorage
+        localStorage.removeItem('token')
+        
+        // Clear axios default header
+        delete axios.defaults.headers.common['Authorization']
+        
+        // Reset state
         setIsAuthenticated(false)
         setUser(null)
         setError(null)
+        
+        // Navigate to login
         navigate('/login')
     }
 
@@ -667,6 +679,37 @@ export const AppProvider = ({ children }) => {
             console.error('Error completing reminder:', error)
         } finally {
             setIsLoading(false)
+        }
+    }
+
+    // Check if user is logged in while loading the app
+    const checkAuthStatus = async () => {
+        try {
+            setIsLoading(true);
+
+            // Get token from localStorage
+            const token = localStorage.getItem('token');
+            
+            if(!token) {
+                setIsAuthenticated(false);
+                return;
+            }
+
+            const response = await axios.get('/api/auth/profile', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            setUser({ email: response.data.email });
+            setIsAuthenticated(true);
+        } catch (error) {
+            console.log('Error checking auth status:', error);
+            setIsAuthenticated(false);
+            localStorage.removeItem('token');
+            setUser(null);
+        } finally {
+            setIsLoading(false);
         }
     }
 

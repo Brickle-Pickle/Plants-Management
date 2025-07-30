@@ -122,17 +122,11 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 - [X] Configurar ESLint y Prettier
 
 #### Día 3-4: Autenticación Base
-- [ ] Modelo de Usuario
-- [ ] Registro de usuarios
-- [ ] Login con JWT
-- [ ] Middleware de autenticación
-- [ ] Validación de datos con Joi
-
-#### Día 5-7: Testing Setup
-- [ ] Configurar Jest y Supertest
-- [ ] Tests para autenticación
-- [ ] Setup de MongoDB Memory Server
-- [ ] CI/CD básico
+- [X] Modelo de Usuario
+- [X] Registro de usuarios
+- [X] Login con JWT
+- [X] Middleware de autenticación
+- [X] Validación de datos con Joi
 
 ### Fase 2: Gestión de Plantas (Semana 2)
 

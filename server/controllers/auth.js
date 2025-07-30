@@ -64,8 +64,20 @@ export const login = async (req, res) => {
     }
 };
 
+export const profile = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id).select('-password');
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ msg: 'Profile error: ' + error.message });
+    }
+}
+
 const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
+router.get('/profile', profile);
 
 export default router;

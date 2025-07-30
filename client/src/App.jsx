@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 // Common
 import Navbar from './common/navbar.jsx'
 import Footer from './common/footer.jsx'
+import AuthLoading from './common/auth_loading.jsx'
 // User Pages
 import Dashboard from './user_pages/dashboard/dashboard.jsx'
 import Login from './user_pages/login/login.jsx'
@@ -18,11 +19,15 @@ import PlantsView from './user_pages/plants/plants_view.jsx'
 import PlantsAdd from './user_pages/plants/plants_add.jsx'
 
 function App() {
-    const { location } = useAppContext();
+    const { location, isLoading } = useAppContext();
 
     useEffect(() => {
         scrollTo(0, 0);
     }, [location]);
+
+    if (isLoading) {
+        return <AuthLoading />
+    }
 
     return (
         <>
