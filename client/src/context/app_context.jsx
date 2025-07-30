@@ -117,6 +117,11 @@ export const AppProvider = ({ children }) => {
         setIsReminderDeleteModalOpen(true)
     }
 
+    const getUserName = () => {
+        let name = user?.email.split('@')[0]
+        return name.charAt(0).toUpperCase() + name.slice(1)
+    }
+
     // Plants CRUD Functions (simulated for now)
     const fetchPlants = async () => {
         try {
@@ -777,7 +782,10 @@ export const AppProvider = ({ children }) => {
         // Auth functions
         login,
         register,
-        logout
+        logout,
+
+        // User functions
+        getUserName,
     }
 
     return (

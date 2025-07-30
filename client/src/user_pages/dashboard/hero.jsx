@@ -6,7 +6,7 @@ import bearImage from '../../assets/bear.png'
 import './styles/hero.css'
 
 const Hero = () => {
-    const { navigate, user, isAuthenticated } = useAppContext()
+    const { navigate, user, isAuthenticated, getUserName } = useAppContext()
     const [currentQuote, setCurrentQuote] = useState('')
 
     // Generate random plant quote on component mount
@@ -103,7 +103,7 @@ const Hero = () => {
                         {isAuthenticated && user && (
                             <div className="dashboard_hero__welcome">
                                 <p className="dashboard_hero__welcome-text">
-                                    ¡Bienvenido de vuelta, <span className="dashboard_hero__username">{user.name}</span>!
+                                    ¡Bienvenido de vuelta, <span className="dashboard_hero__username">{getUserName()}</span>!
                                 </p>
                             </div>
                         )}

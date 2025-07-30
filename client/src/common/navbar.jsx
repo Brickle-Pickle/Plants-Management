@@ -21,7 +21,8 @@ const Navbar = () => {
         user, 
         logout,
         isMobileMenuOpen,
-        setIsMobileMenuOpen 
+        setIsMobileMenuOpen,
+        getUserName
     } = useAppContext()
     
     // Close mobile menu when route changes
@@ -131,7 +132,7 @@ const Navbar = () => {
                                     <div className="navbar__user-avatar">
                                         <FaUser />
                                     </div>
-                                    <span>{user?.name || 'Usuario'}</span>
+                                    <span>{getUserName() || 'Usuario'}</span>
                                 </div>
                                 <button
                                     onClick={handleLogout}
