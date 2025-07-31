@@ -162,6 +162,44 @@ export const deletePlant = async (req, res) => {
     }
 }
 
+export const updatePlant = async (req, res) => {
+    try {
+        // Validate ID
+        if (!req.params.id || !mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ msg: 'Invalid plant ID' });
+        }
+
+        // Find the plant
+        const plant = await Plant.findById(req.params.id);
+        if (!plant) {
+            return res.status(404).json({ msg: 'Plant not found' });
+        }
+
+        // Check if the plant belongs to the authenticated user
+        if (plant.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ msg: 'Not authorized to update this plant' });
+        }
+
+        // Update the plant
+        const updatedPlant = await Plant.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
+        // Send success response
+        res.status(200).json({ 
+            msg: 'Plant updated successfully', 
+            updatedPlant: updatedPlant 
+        });
+    } catch (error) {
+        console.error('=== ERROR UPDATING PLANT ===');
+        console.error('Error details:', error);
+        console.error('Error stack:', error.stack);
+        res.status(500).json({ msg: 'Error updating plant: ' + error.message });
+    }
+}
+
 const router = express.Router();
 
 // Add test route (no auth needed)
@@ -175,5 +213,8 @@ router.get('/user-plants', protect, getUserPlants);
 
 // Add route to delete a plant
 router.delete('/:id', protect, deletePlant);
+
+// Add route to update a plant
+router.put('/:id', protect, updatePlant);
 
 export default router;

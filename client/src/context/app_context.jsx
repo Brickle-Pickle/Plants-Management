@@ -233,11 +233,8 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/plants/:id PUT
-            console.log('Updating plant:', plantId, updatedData)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 800))
+            const response = await axios.put(`/api/plants/${plantId}`, updatedData);
+            console.log('Update API Response:', response.data);
             
             // Update plant in local state - ensure prevPlants is always an array
             setPlants(prevPlants => 
@@ -248,11 +245,10 @@ export const AppProvider = ({ children }) => {
                 )
             )
             closeAllModals()
-            
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al actualizar la planta')
-            console.error('Error updating plant:', error)
+            const errorMessage = error.response?.data?.msg || 'Error al actualizar la planta'
+            setError(errorMessage)
+            console.error('Error updating plant:', errorMessage)
             throw error
         } finally {
             setIsLoading(false)
