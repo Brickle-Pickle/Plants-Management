@@ -200,9 +200,9 @@ export const AppProvider = ({ children }) => {
             closeAllModals()
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al agregar la planta')
-            console.error('Error adding plant:', error)
+            const errorMessage = error.response?.data?.msg || 'Error al agregar la planta'
+            setError(errorMessage)
+            console.error('Error adding plant:', errorMessage)
             throw error
         } finally {
             setIsLoading(false)
@@ -213,14 +213,11 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/plants/:id DELETE
-            console.log('Deleting plant:', plantId)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 500))
+            const response = await axios.delete(`/api/plants/${plantId}`);
+            console.log('Delete API Response:', response.data);
             
             // Remove plant from local state - ensure prevPlants is always an array
-            setPlants(prevPlants => (prevPlants || []).filter(plant => plant.id !== plantId))
+            setPlants(prevPlants => (prevPlants || []).filter(plant => plant._id !== plantId))
             closeAllModals()
             
         } catch (error) {

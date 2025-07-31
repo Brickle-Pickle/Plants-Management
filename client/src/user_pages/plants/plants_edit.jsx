@@ -133,7 +133,11 @@ const PlantsEdit = () => {
                 nextWatering: formData.nextWatering ? new Date(formData.nextWatering) : null
             }
 
-            await updatePlant(selectedPlant.id, updatedData)
+            try {
+                await updatePlant(selectedPlant._id, updatedData)
+            } catch (error) {
+                console.error('Error updating plant:', error)
+            }
         } catch (error) {
             console.error('Error updating plant:', error)
         }

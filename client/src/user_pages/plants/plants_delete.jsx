@@ -19,7 +19,7 @@ const PlantsDelete = () => {
     // Handle delete confirmation
     const handleDelete = async () => {
         try {
-            await deletePlant(selectedPlant.id)
+            await deletePlant(selectedPlant._id)
             // Modal will be closed automatically by deletePlant function
         } catch (error) {
             console.error('Error deleting plant:', error)
@@ -75,9 +75,9 @@ const PlantsDelete = () => {
 
                     <div className="plant_delete__plant-info">
                         <div className="plant_delete__plant-image">
-                            {selectedPlant.image ? (
+                            {selectedPlant.photo ? (
                                 <img 
-                                    src={selectedPlant.image} 
+                                    src={selectedPlant.photo} 
                                     alt={selectedPlant.name}
                                     className="plant_delete__image"
                                 />
@@ -121,7 +121,7 @@ const PlantsDelete = () => {
                                     {content.plantInfo.lastWatered}
                                 </span>
                                 <span className="plant_delete__detail-value">
-                                    {formatDate(selectedPlant.lastWatered)}
+                                    {formatDate(selectedPlant.info?.lastWatering)}
                                 </span>
                             </div>
                         </div>

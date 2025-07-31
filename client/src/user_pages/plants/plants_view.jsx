@@ -41,7 +41,7 @@ const PlantsView = () => {
 
     const handleCareHistory = () => {
         // #backend - Navigate to care history page
-        navigate(`/care-history/${selectedPlant.id}`)
+        navigate(`/care-history/${selectedPlant._id}`)
         closeAllModals()
     }
 

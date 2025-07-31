@@ -42,4 +42,44 @@ const PlantSchema = new mongoose.Schema({
     }
 });
 
+// Add a pre-save middleware to set nextWatering if not provided
+PlantSchema.pre('save', function(next) {
+    if (!this.info.nextWatering) {
+        this.info.nextWatering = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+    }
+    next();
+});
+
+// Add a pre-save middleware to set lastWatering if not provided
+PlantSchema.pre('save', function(next) {
+    if (!this.info.lastWatering) {
+        this.info.lastWatering = new Date(Date.now());
+    }
+    next();
+});
+
+// Add a pre-save middleware to set status if not provided
+PlantSchema.pre('save', function(next) {
+    if (!this.info.status) {
+        this.info.status = 'healthy';
+    }
+    next();
+});
+
+// Add a pre-save middleware to set notes if not provided
+PlantSchema.pre('save', function(next) {
+    if (!this.info.notes) {
+        this.info.notes = '';
+    }
+    next();
+});
+
+// Add a pre-save middleware to set createdAt if not provided
+PlantSchema.pre('save', function(next) {
+    if (!this.createdAt) {
+        this.createdAt = new Date();
+    }
+    next();
+});
+
 export default mongoose.model('Plant', PlantSchema);
