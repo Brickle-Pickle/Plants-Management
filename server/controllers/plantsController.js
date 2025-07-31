@@ -77,6 +77,56 @@ export const createPlant = async (req, res) => {
     }
 }
 
+export const getUserPlants = async (req, res) => {
+    try {
+        console.log('=== GET USER PLANTS REQUEST ===');
+        console.log('Headers:', req.headers);
+        console.log('User from middleware:', req.user);
+        console.log('User ID:', req.user?._id);
+        console.log('User ID type:', typeof req.user?._id);
+        
+        // Check if user exists in request
+        if (!req.user || !req.user._id) {
+            console.log('User not authenticated - no user in request');
+            return res.status(401).json({ msg: 'User not authenticated' });
+        }
+        
+        const userId = req.user._id;
+        console.log('Searching for plants with userId:', userId);
+        
+        // Try to find plants for this user with detailed logging
+        const plants = await Plant.find({ userId: userId });
+        console.log('Query result - Found plants:', plants.length);
+        
+        if (plants.length === 0) {
+            console.log('No plants found for user:', userId);
+            // Let's also check if there are any plants in the database at all
+            const totalPlants = await Plant.countDocuments();
+            console.log('Total plants in database:', totalPlants);
+            
+            if (totalPlants > 0) {
+                // Check what userIds exist in the database
+                const existingUserIds = await Plant.distinct('userId');
+                console.log('Existing userIds in plants collection:', existingUserIds);
+                console.log('Current user ID comparison:', {
+                    currentUserId: userId,
+                    currentUserIdString: userId.toString(),
+                    existingIds: existingUserIds.map(id => id.toString())
+                });
+            }
+        } else {
+            console.log('Plants found:', plants.map(p => ({ id: p._id, name: p.name, userId: p.userId })));
+        }
+        
+        res.status(200).json(plants);
+    } catch (error) {
+        console.error('=== ERROR FETCHING PLANTS ===');
+        console.error('Error details:', error);
+        console.error('Error stack:', error.stack);
+        res.status(500).json({ msg: 'Error fetching plants: ' + error.message });
+    }
+}
+
 const router = express.Router();
 
 // Add test route (no auth needed)
@@ -84,5 +134,8 @@ router.get('/test', testRoute);
 
 // Protect the create route with authentication middleware
 router.post('/create', protect, createPlant);
+
+// Add route to get user's plants
+router.get('/user-plants', protect, getUserPlants);
 
 export default router;

@@ -2,6 +2,19 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 
+// Configure axios defaults for credentials and base URL
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://localhost:5000' // Backend server URL
+
+// Create axios instance with specific configuration for better control
+const apiClient = axios.create({
+    baseURL: 'http://localhost:5000',
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+
 // Create the context
 const AppContext = createContext()
 
@@ -138,61 +151,28 @@ export const AppProvider = ({ children }) => {
         return name?.charAt(0).toUpperCase() + name?.slice(1)
     }
 
-    // Plants CRUD Functions (simulated for now)
     const fetchPlants = async () => {
         try {
+            console.log('=== FETCH PLANTS CALLED ===');
+            console.log('User:', user);
+            console.log('Is Authenticated:', isAuthenticated);
+            console.log('Is Loading:', isLoading);
+            
             setIsLoadingPlants(true)
             setPlantsError(null)
             
-            // #backend - will connect to /api/plants
-            console.log('Fetching plants...')
+            const response = await axios.get('/api/plants/user-plants');
+            console.log('Plants API Response:', response.data);
             
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1000))
-            
-            // Simulate plants data
-            const mockPlants = [
-                {
-                    id: 1,
-                    name: "Monstera Deliciosa",
-                    species: "Monstera deliciosa",
-                    image: "/monstera.png",
-                    location: "Sala de estar",
-                    status: "healthy",
-                    lastWatered: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-                    nextWatering: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // in 5 days
-                    notes: "Planta muy saludable, creciendo bien"
-                },
-                {
-                    id: 2,
-                    name: "Pothos Dorado",
-                    species: "Epipremnum aureum",
-                    image: "/pothos.png",
-                    location: "Cocina",
-                    status: "needsWater",
-                    lastWatered: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-                    nextWatering: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day overdue
-                    notes: "Necesita riego urgente"
-                },
-                {
-                    id: 3,
-                    name: "Sansevieria",
-                    species: "Sansevieria trifasciata",
-                    image: "/sansevieria.png",
-                    location: "Dormitorio",
-                    status: "healthy",
-                    lastWatered: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), // 14 days ago
-                    nextWatering: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // in 7 days
-                    notes: "Planta resistente, muy fácil de cuidar"
-                }
-            ]
-            
-            setPlants(mockPlants)
-            
+            // Backend returns plants directly in response.data, not response.data.plants
+            setPlants(response.data || [])
+            console.log('Plants set to state:', response.data || []);
         } catch (error) {
-            // #backend - will handle API errors
+            console.error('Error fetching plants:', error);
+            console.error('Error response:', error.response?.data);
             setPlantsError('Error al cargar las plantas')
-            console.error('Error fetching plants:', error)
+            // Ensure plants remains an array even on error
+            setPlants([])
         } finally {
             setIsLoadingPlants(false)
         }
@@ -215,8 +195,8 @@ export const AppProvider = ({ children }) => {
                 nextWatering: plantData.nextWatering ? new Date(plantData.nextWatering) : null
             }
             
-            // Add plant to local state
-            setPlants(prevPlants => [...prevPlants, newPlant])
+            // Add plant to local state - ensure prevPlants is always an array
+            setPlants(prevPlants => [...(prevPlants || []), newPlant])
             closeAllModals()
             
         } catch (error) {
@@ -239,8 +219,8 @@ export const AppProvider = ({ children }) => {
             // Simulate API delay
             await new Promise(resolve => setTimeout(resolve, 500))
             
-            // Remove plant from local state
-            setPlants(prevPlants => prevPlants.filter(plant => plant.id !== plantId))
+            // Remove plant from local state - ensure prevPlants is always an array
+            setPlants(prevPlants => (prevPlants || []).filter(plant => plant.id !== plantId))
             closeAllModals()
             
         } catch (error) {
@@ -262,9 +242,9 @@ export const AppProvider = ({ children }) => {
             // Simulate API delay
             await new Promise(resolve => setTimeout(resolve, 800))
             
-            // Update plant in local state
+            // Update plant in local state - ensure prevPlants is always an array
             setPlants(prevPlants => 
-                prevPlants.map(plant => 
+                (prevPlants || []).map(plant => 
                     plant.id === plantId 
                         ? { ...plant, ...updatedData }
                         : plant
@@ -296,7 +276,7 @@ export const AppProvider = ({ children }) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
             setIsAuthenticated(true);
-            setUser ({ email: credentials.email });
+            setUser(response.data.user); // Set the full user object including _id
             
             // Navigate to dashboard after successful login
             navigate('/')
@@ -323,7 +303,7 @@ export const AppProvider = ({ children }) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
             
             setIsAuthenticated(true);
-            setUser({ email: userData.email })
+            setUser(response.data.user) // Set the full user object including _id
             
             // Navigate to dashboard after successful registration
             navigate('/')
@@ -699,13 +679,17 @@ export const AppProvider = ({ children }) => {
     // Check if user is logged in while loading the app
     const checkAuthStatus = async () => {
         try {
+            console.log('=== CHECK AUTH STATUS ===');
             setIsLoading(true);
     
             // Get token from localStorage
             const token = localStorage.getItem('token');
+            console.log('Token from localStorage:', token ? 'Token exists' : 'No token');
             
             if(!token) {
+                console.log('No token found - setting unauthenticated');
                 setIsAuthenticated(false);
+                setUser(null);
                 return;
             }
     
@@ -713,12 +697,15 @@ export const AppProvider = ({ children }) => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     
             const response = await axios.get('/api/auth/profile');
+            console.log('Auth profile response:', response.data);
     
-            setUser({ email: response.data.email });
+            setUser(response.data); // Set the full user object including _id
             setIsAuthenticated(true);
+            console.log('User authenticated successfully:', response.data);
             
         } catch (error) {
             console.error('Auth check failed:', error);
+            console.error('Auth error response:', error.response?.data);
             // Clear invalid token
             localStorage.removeItem('token');
             delete axios.defaults.headers.common['Authorization'];

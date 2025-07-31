@@ -6,6 +6,8 @@ import './styles/plants_grid.css'
 const PlantsGrid = () => {
     const {
         plants,
+        isLoading,
+        user,
         isLoadingPlants,
         plantsError,
         plantsFilter,
@@ -16,13 +18,29 @@ const PlantsGrid = () => {
         openViewModal,
         openEditModal,
         openDeleteModal,
-        openAddModal
+        openAddModal,
+        isAuthenticated
     } = useAppContext()
 
     // Fetch plants on component mount
     useEffect(() => {
-        fetchPlants()
-    }, [])
+        console.log('=== PLANTS GRID useEffect ===');
+        console.log('isLoading:', isLoading);
+        console.log('isAuthenticated:', isAuthenticated);
+        console.log('user:', user);
+        console.log('user._id:', user?._id);
+        
+        if (!isLoading && isAuthenticated && user?._id) {
+            console.log('Conditions met - calling fetchPlants');
+            fetchPlants()
+        } else {
+            console.log('Conditions not met:', {
+                isLoading,
+                isAuthenticated,
+                hasUserId: !!user?._id
+            });
+        }
+    }, [isLoading, isAuthenticated, user?._id]) // Changed dependency to user?._id instead of user
 
     // Helper function to format dates
     const formatDate = (date) => {
@@ -57,24 +75,40 @@ const PlantsGrid = () => {
 
     // Filter and sort plants
     const filteredAndSortedPlants = useMemo(() => {
+        // Ensure plants is an array before processing
+        if (!plants || !Array.isArray(plants)) {
+            return []
+        }
+        
         let filtered = plants
 
-        // Apply filter
+        // Apply filter - adjust for backend structure
         if (plantsFilter !== 'all') {
-            filtered = plants.filter(plant => plant.status === plantsFilter)
+            filtered = plants.filter(plant => {
+                const status = plant.info?.status || plant.status;
+                return status === plantsFilter;
+            })
         }
 
-        // Apply sorting
+        // Apply sorting - adjust for backend structure
         filtered.sort((a, b) => {
             switch (plantsSortBy) {
                 case 'name':
                     return a.name.localeCompare(b.name)
                 case 'lastWatered':
-                    return new Date(b.lastWatered) - new Date(a.lastWatered)
+                    const aLastWatered = a.info?.lastWatering || a.lastWatered;
+                    const bLastWatered = b.info?.lastWatering || b.lastWatered;
+                    if (!aLastWatered || !bLastWatered) return 0;
+                    return new Date(bLastWatered) - new Date(aLastWatered)
                 case 'nextWatering':
-                    return new Date(a.nextWatering) - new Date(b.nextWatering)
+                    const aNextWatering = a.info?.nextWatering || a.nextWatering;
+                    const bNextWatering = b.info?.nextWatering || b.nextWatering;
+                    if (!aNextWatering || !bNextWatering) return 0;
+                    return new Date(aNextWatering) - new Date(bNextWatering)
                 case 'status':
-                    return a.status.localeCompare(b.status)
+                    const aStatus = a.info?.status || a.status || '';
+                    const bStatus = b.info?.status || b.status || '';
+                    return aStatus.localeCompare(bStatus)
                 default:
                     return 0
             }
@@ -110,7 +144,7 @@ const PlantsGrid = () => {
     }
 
     // Render empty state
-    if (plants.length === 0) {
+    if (!plants || plants.length === 0) {
         return (
             <div className="plants_grid">
                 <div className="plants_grid__empty">
@@ -180,12 +214,12 @@ const PlantsGrid = () => {
             {/* Plants Grid */}
             <div className="plants_grid__container">
                 {filteredAndSortedPlants.map((plant) => (
-                    <div key={plant.id} className="plants_grid__card">
+                    <div key={plant._id || plant.id} className="plants_grid__card">
                         {/* Plant Image */}
                         <div className="plants_grid__card_image">
-                            {plant.image ? (
+                            {plant.photo ? (
                                 <img 
-                                    src={plant.image} 
+                                    src={plant.photo} 
                                     alt={plant.name}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
@@ -202,8 +236,8 @@ const PlantsGrid = () => {
                                     <h3 className="plants_grid__card_name">{plant.name}</h3>
                                     <p className="plants_grid__card_species">{plant.species}</p>
                                 </div>
-                                <span className={`plants_grid__card_status plants_grid__card_status--${getStatusClass(plant.status)}`}>
-                                    {getStatusText(plant.status)}
+                                <span className={`plants_grid__card_status plants_grid__card_status--${getStatusClass(plant.info?.status || plant.status)}`}>
+                                    {getStatusText(plant.info?.status || plant.status)}
                                 </span>
                             </div>
 
@@ -223,7 +257,7 @@ const PlantsGrid = () => {
                                         {content.plantCard.lastWatered}
                                     </span>
                                     <span className="plants_grid__card_info_value">
-                                        {formatDate(new Date(plant.lastWatered))}
+                                        {plant.info?.lastWatering ? formatDate(new Date(plant.info.lastWatering)) : 'No registrado'}
                                     </span>
                                 </div>
                                 
@@ -232,7 +266,7 @@ const PlantsGrid = () => {
                                         {content.plantCard.nextWatering}
                                     </span>
                                     <span className="plants_grid__card_info_value">
-                                        {formatDate(new Date(plant.nextWatering))}
+                                        {plant.info?.nextWatering ? formatDate(new Date(plant.info.nextWatering)) : 'No programado'}
                                     </span>
                                 </div>
                             </div>

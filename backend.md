@@ -132,7 +132,7 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 
 #### Día 8-10: CRUD de Plantas
 - [X] Modelo de Plant
-- [ ] Endpoint para crear planta
+- [X] Endpoint para crear planta
 - [ ] Endpoint para listar plantas del usuario
 - [ ] Endpoint para obtener planta específica
 - [ ] Endpoint para actualizar planta
