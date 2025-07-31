@@ -137,6 +137,54 @@
     box-shadow: var(--shadow-md);
 }
 
+/* Unauthenticated state styles */
+.plants_grid__unauthenticated {
+    text-align: center;
+    padding: var(--spacing-3xl);
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--card-border);
+    max-width: 500px;
+    margin: var(--spacing-3xl) auto;
+}
+
+.plants_grid__unauthenticated_title {
+    font-family: var(--ff-primary);
+    font-size: var(--text-2xl);
+    color: var(--color-primary-700);
+    margin-bottom: var(--spacing-md);
+}
+
+.plants_grid__unauthenticated_description {
+    font-family: var(--ff-secondary);
+    color: var(--color-neutral-600);
+    margin-bottom: var(--spacing-xl);
+    line-height: var(--leading-relaxed);
+    font-size: var(--text-lg);
+}
+
+.plants_grid__unauthenticated_button {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-md);
+    font-family: var(--ff-secondary);
+    font-weight: var(--font-medium);
+    font-size: var(--text-base);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    min-width: 150px;
+}
+
+.plants_grid__unauthenticated_button:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
 .plants_grid__container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -327,6 +375,15 @@
     .plants_grid__title {
         font-size: var(--text-2xl);
     }
+
+    .plants_grid__unauthenticated {
+        margin: var(--spacing-xl) auto;
+        padding: var(--spacing-xl);
+    }
+    
+    .plants_grid__unauthenticated_title {
+        font-size: var(--text-xl);
+    }
 }
 
 @media (max-width: 480px) {
@@ -348,6 +405,10 @@
     .plants_grid__card_button {
         width: 100%;
         text-align: center;
+    }
+
+    .plants_grid__unauthenticated {
+        padding: var(--spacing-lg);
     }
 }
 

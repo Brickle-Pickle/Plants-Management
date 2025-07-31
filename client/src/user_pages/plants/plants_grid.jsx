@@ -121,6 +121,33 @@ const PlantsGrid = () => {
         openAddModal();
     }
 
+    const handleLoginRedirect = () => {
+        // Navigate to login page - adjust this based on your routing setup
+        window.location.href = '/login';
+    }
+
+    // Render unauthenticated state - check this first
+    if (!isLoading && !isAuthenticated) {
+        return (
+            <div className="plants_grid">
+                <div className="plants_grid__unauthenticated">
+                    <h2 className="plants_grid__unauthenticated_title">
+                        {content.unauthenticatedState.title}
+                    </h2>
+                    <p className="plants_grid__unauthenticated_description">
+                        {content.unauthenticatedState.description}
+                    </p>
+                    <button 
+                        className="plants_grid__unauthenticated_button"
+                        onClick={handleLoginRedirect}
+                    >
+                        {content.unauthenticatedState.buttonText}
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
     // Render loading state
     if (isLoadingPlants) {
         return (

@@ -6,6 +6,11 @@
         "description": "Comienza agregando tu primera planta para empezar a gestionar tu jardín",
         "buttonText": "Agregar Primera Planta"
     },
+    "unauthenticatedState": {
+        "title": "Acceso Requerido",
+        "description": "Necesitas iniciar sesión para ver y gestionar tus plantas",
+        "buttonText": "Iniciar Sesión"
+    },
     "buttons": {
         "view": "Ver",
         "edit": "Editar", 

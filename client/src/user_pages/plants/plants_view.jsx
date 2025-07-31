@@ -40,7 +40,7 @@ const PlantsView = () => {
     }
 
     const handleCareHistory = () => {
-        // #backend - Navigate to care history page
+        // Navigate to care history page
         navigate(`/care-history/${selectedPlant._id}`)
         closeAllModals()
     }
@@ -61,7 +61,8 @@ const PlantsView = () => {
         
         const formattedDate = plantDate.toLocaleDateString('es-ES', options)
         
-        if (date === selectedPlant.nextWatering) {
+        // Check if it's the next watering date for special formatting
+        if (date === selectedPlant.info?.nextWatering) {
             if (diffDays === 0) return `Hoy (${formattedDate})`
             if (diffDays === 1) return plantDate > now ? `Mañana (${formattedDate})` : `Ayer (${formattedDate})`
             return plantDate > now ? `En ${diffDays} días (${formattedDate})` : `Hace ${diffDays} días (${formattedDate})`
@@ -97,7 +98,14 @@ const PlantsView = () => {
         return statusMap[status] || statusMap.healthy
     }
 
-    const statusInfo = getStatusInfo(selectedPlant.status)
+    // Access nested properties from the backend model structure
+    const plantPhoto = selectedPlant.photo
+    const plantStatus = selectedPlant.info?.status || 'healthy'
+    const plantLastWatering = selectedPlant.info?.lastWatering
+    const plantNextWatering = selectedPlant.info?.nextWatering
+    const plantNotes = selectedPlant.info?.notes
+
+    const statusInfo = getStatusInfo(plantStatus)
 
     return (
         <div className="plant_view" onClick={handleCloseModal}>
@@ -118,9 +126,9 @@ const PlantsView = () => {
                 <div className="modal-body">
                     {/* Plant Image Section */}
                     <div className="plant-image-section">
-                        {selectedPlant.image ? (
+                        {plantPhoto ? (
                             <img 
-                                src={selectedPlant.image} 
+                                src={plantPhoto} 
                                 alt={selectedPlant.name}
                                 className="plant-image"
                                 onError={(e) => {
@@ -131,7 +139,7 @@ const PlantsView = () => {
                         ) : null}
                         <div 
                             className="no-image" 
-                            style={{ display: selectedPlant.image ? 'none' : 'flex' }}
+                            style={{ display: plantPhoto ? 'none' : 'flex' }}
                         >
                             <IoLeafOutline /> {content.placeholders.noImage}
                         </div>
@@ -170,7 +178,7 @@ const PlantsView = () => {
                                 <IoWaterOutline /> {content.plantInfo.lastWatered}
                             </div>
                             <div className="info-value">
-                                {formatDate(selectedPlant.lastWatered)}
+                                {formatDate(plantLastWatering)}
                             </div>
                         </div>
 
@@ -179,7 +187,7 @@ const PlantsView = () => {
                                 <IoTimeOutline /> {content.plantInfo.nextWatering}
                             </div>
                             <div className="info-value">
-                                {formatDate(selectedPlant.nextWatering)}
+                                {formatDate(plantNextWatering)}
                             </div>
                         </div>
                     </div>
@@ -190,8 +198,8 @@ const PlantsView = () => {
                             <IoDocumentTextOutline /> {content.plantInfo.notes}
                         </div>
                         <div className="notes-content">
-                            {selectedPlant.notes ? (
-                                selectedPlant.notes
+                            {plantNotes ? (
+                                plantNotes
                             ) : (
                                 <span className="no-notes">
                                     {content.placeholders.noNotes}

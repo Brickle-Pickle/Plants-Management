@@ -24,16 +24,18 @@ const PlantsEdit = () => {
         updatePlant
     } = useAppContext()
 
-    // Form state
+    // Form state - adapted to backend model structure
     const [formData, setFormData] = useState({
         name: '',
         species: '',
         location: '',
-        status: '',
-        lastWatered: '',
-        nextWatering: '',
-        notes: '',
-        image: ''
+        photo: '',
+        info: {
+            status: '',
+            lastWatering: '',
+            nextWatering: '',
+            notes: ''
+        }
     })
 
     // Validation state
@@ -47,15 +49,17 @@ const PlantsEdit = () => {
                 name: selectedPlant.name || '',
                 species: selectedPlant.species || '',
                 location: selectedPlant.location || '',
-                status: selectedPlant.status || '',
-                lastWatered: selectedPlant.lastWatered 
-                    ? new Date(selectedPlant.lastWatered).toISOString().split('T')[0] 
-                    : '',
-                nextWatering: selectedPlant.nextWatering 
-                    ? new Date(selectedPlant.nextWatering).toISOString().split('T')[0] 
-                    : '',
-                notes: selectedPlant.notes || '',
-                image: selectedPlant.image || ''
+                photo: selectedPlant.photo || '',
+                info: {
+                    status: selectedPlant.info?.status || '',
+                    lastWatering: selectedPlant.info?.lastWatering 
+                        ? new Date(selectedPlant.info.lastWatering).toISOString().split('T')[0] 
+                        : '',
+                    nextWatering: selectedPlant.info?.nextWatering 
+                        ? new Date(selectedPlant.info.nextWatering).toISOString().split('T')[0] 
+                        : '',
+                    notes: selectedPlant.info?.notes || ''
+                }
             })
             setErrors({})
         }
@@ -83,18 +87,18 @@ const PlantsEdit = () => {
         }
 
         // Date validations
-        if (formData.lastWatered) {
-            const lastWateredDate = new Date(formData.lastWatered)
+        if (formData.info.lastWatering) {
+            const lastWateredDate = new Date(formData.info.lastWatering)
             const today = new Date()
             today.setHours(23, 59, 59, 999) // End of today
             
             if (lastWateredDate > today) {
-                newErrors.lastWatered = content.messages.validation.futureLastWatered
+                newErrors.lastWatering = content.messages.validation.futureLastWatered
             }
         }
 
-        if (formData.nextWatering) {
-            const nextWateringDate = new Date(formData.nextWatering)
+        if (formData.info.nextWatering) {
+            const nextWateringDate = new Date(formData.info.nextWatering)
             const today = new Date()
             today.setHours(0, 0, 0, 0) // Start of today
             
@@ -114,10 +118,21 @@ const PlantsEdit = () => {
 
     // Handle input changes
     const handleInputChange = (field, value) => {
-        setFormData(prev => ({
-            ...prev,
-            [field]: value
-        }))
+        if (field.startsWith('info.')) {
+            const infoField = field.replace('info.', '')
+            setFormData(prev => ({
+                ...prev,
+                info: {
+                    ...prev.info,
+                    [infoField]: value
+                }
+            }))
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [field]: value
+            }))
+        }
     }
 
     // Handle form submission
@@ -127,10 +142,18 @@ const PlantsEdit = () => {
         if (!isFormValid || isLoading) return
 
         try {
+            // Prepare data according to backend model structure
             const updatedData = {
-                ...formData,
-                lastWatered: formData.lastWatered ? new Date(formData.lastWatered) : null,
-                nextWatering: formData.nextWatering ? new Date(formData.nextWatering) : null
+                name: formData.name,
+                species: formData.species,
+                location: formData.location,
+                photo: formData.photo,
+                info: {
+                    status: formData.info.status,
+                    lastWatering: formData.info.lastWatering ? new Date(formData.info.lastWatering) : null,
+                    nextWatering: formData.info.nextWatering ? new Date(formData.info.nextWatering) : null,
+                    notes: formData.info.notes
+                }
             }
 
             try {
@@ -193,9 +216,9 @@ const PlantsEdit = () => {
                         {/* Image Section */}
                         <div className="plant_edit__image-section">
                             <div className="plant_edit__image-container">
-                                {formData.image ? (
+                                {formData.photo ? (
                                     <img 
-                                        src={formData.image} 
+                                        src={formData.photo} 
                                         alt={formData.name}
                                         className="plant_edit__image"
                                     />
@@ -215,8 +238,8 @@ const PlantsEdit = () => {
                                 <input
                                     type="url"
                                     className="plant_edit__input"
-                                    value={formData.image}
-                                    onChange={(e) => handleInputChange('image', e.target.value)}
+                                    value={formData.photo}
+                                    onChange={(e) => handleInputChange('photo', e.target.value)}
                                     placeholder={content.form.image.placeholder}
                                 />
                             </div>
@@ -288,8 +311,8 @@ const PlantsEdit = () => {
                                 <div className="plant_edit__select-wrapper">
                                     <select
                                         className="plant_edit__select"
-                                        value={formData.status}
-                                        onChange={(e) => handleInputChange('status', e.target.value)}
+                                        value={formData.info.status}
+                                        onChange={(e) => handleInputChange('info.status', e.target.value)}
                                     >
                                         <option value="">{content.placeholders.selectStatus}</option>
                                         {Object.entries(content.form.status.options).map(([value, label]) => (
@@ -298,9 +321,9 @@ const PlantsEdit = () => {
                                             </option>
                                         ))}
                                     </select>
-                                    {formData.status && (
+                                    {formData.info.status && (
                                         <div className="plant_edit__status-icon">
-                                            {getStatusIcon(formData.status)}
+                                            {getStatusIcon(formData.info.status)}
                                         </div>
                                     )}
                                 </div>
@@ -315,12 +338,12 @@ const PlantsEdit = () => {
                                     </label>
                                     <input
                                         type="date"
-                                        className={`plant_edit__input ${errors.lastWatered ? 'plant_edit__input--error' : ''}`}
-                                        value={formData.lastWatered}
-                                        onChange={(e) => handleInputChange('lastWatered', e.target.value)}
+                                        className={`plant_edit__input ${errors.lastWatering ? 'plant_edit__input--error' : ''}`}
+                                        value={formData.info.lastWatering}
+                                        onChange={(e) => handleInputChange('info.lastWatering', e.target.value)}
                                     />
-                                    {errors.lastWatered && (
-                                        <span className="plant_edit__error">{errors.lastWatered}</span>
+                                    {errors.lastWatering && (
+                                        <span className="plant_edit__error">{errors.lastWatering}</span>
                                     )}
                                 </div>
 
@@ -332,8 +355,8 @@ const PlantsEdit = () => {
                                     <input
                                         type="date"
                                         className={`plant_edit__input ${errors.nextWatering ? 'plant_edit__input--error' : ''}`}
-                                        value={formData.nextWatering}
-                                        onChange={(e) => handleInputChange('nextWatering', e.target.value)}
+                                        value={formData.info.nextWatering}
+                                        onChange={(e) => handleInputChange('info.nextWatering', e.target.value)}
                                     />
                                     {errors.nextWatering && (
                                         <span className="plant_edit__error">{errors.nextWatering}</span>
@@ -349,8 +372,8 @@ const PlantsEdit = () => {
                                 </label>
                                 <textarea
                                     className="plant_edit__textarea"
-                                    value={formData.notes}
-                                    onChange={(e) => handleInputChange('notes', e.target.value)}
+                                    value={formData.info.notes}
+                                    onChange={(e) => handleInputChange('info.notes', e.target.value)}
                                     placeholder={content.form.notes.placeholder}
                                     rows="4"
                                 />

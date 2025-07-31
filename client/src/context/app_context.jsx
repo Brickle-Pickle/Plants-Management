@@ -278,6 +278,8 @@ export const AppProvider = ({ children }) => {
             // Navigate to dashboard after successful login
             navigate('/')
             
+            // Reload the web
+            window.location.reload()
         } catch (error) {
             // Handle API errors properly
             const errorMessage = error.response?.data?.msg || 'Error al iniciar sesión. Inténtalo de nuevo.'
@@ -326,6 +328,7 @@ export const AppProvider = ({ children }) => {
         setIsAuthenticated(false)
         setUser(null)
         setError(null)
+        setPlants([])
         
         // Navigate to login
         navigate('/login')
