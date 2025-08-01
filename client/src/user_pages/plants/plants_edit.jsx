@@ -140,17 +140,42 @@ const PlantsEdit = () => {
 
     // Handle image file upload
     const handleImageUpload = async (e) => {
+        e.preventDefault(); // Prevent any default behavior
+        e.stopPropagation(); // Stop event bubbling
+        
         const file = e.target.files[0]
         if (file) {
             try {
                 setIsUploadingImage(true)
-                const imageUrl = await uploadImageToCloudinary(file)
+                
+                // Create FormData for file upload
+                const formData = new FormData()
+                formData.append('file', file)
+                
+                // Upload directly without using the context function to avoid global loading state
+                const response = await fetch('http://localhost:5000/api/upload', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: formData
+                })
+                
+                if (!response.ok) {
+                    throw new Error('Error uploading image')
+                }
+                
+                const data = await response.json()
+                
                 setFormData(prev => ({
                     ...prev,
-                    photo: imageUrl
+                    photo: data.url
                 }))
             } catch (error) {
                 console.error('Error uploading image:', error)
+                // Clear the file input to allow re-selection
+                e.target.value = '';
             } finally {
                 setIsUploadingImage(false)
             }
@@ -264,6 +289,7 @@ const PlantsEdit = () => {
                                 <label 
                                     htmlFor="plant-image-upload-edit" 
                                     className={`plant_edit__image-button ${isUploadingImage ? 'uploading' : ''}`}
+                                    onClick={(e) => e.stopPropagation()} // Add this to prevent event bubbling
                                 >
                                     <FaUpload />
                                     {isUploadingImage 
