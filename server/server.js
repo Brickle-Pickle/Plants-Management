@@ -4,23 +4,24 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './controllers/auth.js';
 import plantsRoutes from './controllers/plantsController.js';
+import streamAndUpload from './controllers/cloudinaryController.js'; // Fixed import
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000; // Changed to 5000 to match frontend config
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 
-// Alternative CORS configuration for development
 app.use(cors({
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
     credentials: true,
-    optionsSuccessStatus: 200 // For legacy browser support
+    optionsSuccessStatus: 200
 }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/plants', plantsRoutes);
+app.post('/api/upload', streamAndUpload); // Fixed usage
 
 app.get('/', (req, res) => {
     res.send('Plant management system working!');

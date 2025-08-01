@@ -133,10 +133,10 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 #### Día 8-10: CRUD de Plantas
 - [X] Modelo de Plant
 - [X] Endpoint para crear planta
-- [ ] Endpoint para listar plantas del usuario
-- [ ] Endpoint para obtener planta específica
-- [ ] Endpoint para actualizar planta
-- [ ] Endpoint para eliminar planta
+- [X] Endpoint para listar plantas del usuario
+- [X] Endpoint para obtener planta específica
+- [X] Endpoint para actualizar planta
+- [X] Endpoint para eliminar planta
 
 #### Día 11-12: Subida de Imágenes
 - [ ] Configurar Multer
@@ -144,12 +144,6 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 - [ ] Endpoint para subir fotos
 - [ ] Validación de tipos de archivo
 - [ ] Redimensionado automático
-
-#### Día 13-14: Validaciones y Tests
-- [ ] Validaciones robustas para plantas
-- [ ] Tests unitarios para CRUD
-- [ ] Tests de integración
-- [ ] Manejo de errores
 
 ### Fase 3: Sistema de Cuidados (Semana 3)
 

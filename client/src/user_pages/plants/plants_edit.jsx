@@ -10,7 +10,8 @@ import {
     FaCheck,
     FaExclamationTriangle,
     FaHeartbeat,
-    FaTint
+    FaTint,
+    FaUpload
 } from 'react-icons/fa'
 import content from './content/plants_edit.json'
 import './styles/plants_edit.css'
@@ -21,7 +22,8 @@ const PlantsEdit = () => {
         selectedPlant,
         isLoading,
         closeAllModals,
-        updatePlant
+        updatePlant,
+        uploadImageToCloudinary
     } = useAppContext()
 
     // Form state - adapted to backend model structure
@@ -41,6 +43,7 @@ const PlantsEdit = () => {
     // Validation state
     const [errors, setErrors] = useState({})
     const [isFormValid, setIsFormValid] = useState(false)
+    const [isUploadingImage, setIsUploadingImage] = useState(false)
 
     // Initialize form data when modal opens or plant changes
     useEffect(() => {
@@ -135,11 +138,30 @@ const PlantsEdit = () => {
         }
     }
 
+    // Handle image file upload
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            try {
+                setIsUploadingImage(true)
+                const imageUrl = await uploadImageToCloudinary(file)
+                setFormData(prev => ({
+                    ...prev,
+                    photo: imageUrl
+                }))
+            } catch (error) {
+                console.error('Error uploading image:', error)
+            } finally {
+                setIsUploadingImage(false)
+            }
+        }
+    }
+
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault()
         
-        if (!isFormValid || isLoading) return
+        if (!isFormValid || isLoading || isUploadingImage) return
 
         try {
             // Prepare data according to backend model structure
@@ -230,17 +252,35 @@ const PlantsEdit = () => {
                                 )}
                             </div>
                             
-                            <div className="plant_edit__field">
-                                <label className="plant_edit__label">
-                                    <FaImage />
-                                    {content.form.image.label}
+                            <div className="plant_edit__image-upload">
+                                <input
+                                    type="file"
+                                    id="plant-image-upload-edit"
+                                    className="plant_edit__image-input"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    disabled={isUploadingImage}
+                                />
+                                <label 
+                                    htmlFor="plant-image-upload-edit" 
+                                    className={`plant_edit__image-button ${isUploadingImage ? 'uploading' : ''}`}
+                                >
+                                    <FaUpload />
+                                    {isUploadingImage 
+                                        ? 'Subiendo...' 
+                                        : formData.photo 
+                                            ? 'Cambiar imagen' 
+                                            : 'Subir imagen'
+                                    }
                                 </label>
+
                                 <input
                                     type="url"
                                     className="plant_edit__input"
                                     value={formData.photo}
                                     onChange={(e) => handleInputChange('photo', e.target.value)}
                                     placeholder={content.form.image.placeholder}
+                                    disabled={isUploadingImage}
                                 />
                             </div>
                         </div>
@@ -386,7 +426,7 @@ const PlantsEdit = () => {
                             type="button"
                             className="plant_edit__button plant_edit__button--cancel"
                             onClick={handleCancel}
-                            disabled={isLoading}
+                            disabled={isLoading || isUploadingImage}
                         >
                             {content.buttons.cancel}
                         </button>
@@ -394,9 +434,9 @@ const PlantsEdit = () => {
                         <button 
                             type="submit"
                             className="plant_edit__button plant_edit__button--save"
-                            disabled={!isFormValid || isLoading}
+                            disabled={!isFormValid || isLoading || isUploadingImage}
                         >
-                            {isLoading ? content.buttons.saving : content.buttons.save}
+                            {isLoading || isUploadingImage ? content.buttons.saving : content.buttons.save}
                         </button>
                     </div>
                 </form>

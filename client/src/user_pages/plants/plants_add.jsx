@@ -21,7 +21,8 @@ const PlantsAdd = () => {
         isAddModalOpen,
         isLoading,
         closeAllModals,
-        addPlant
+        addPlant,
+        uploadImageToCloudinary
     } = useAppContext()
 
     // Form state
@@ -39,6 +40,7 @@ const PlantsAdd = () => {
     // Validation state
     const [errors, setErrors] = useState({})
     const [isFormValid, setIsFormValid] = useState(false)
+    const [isUploadingImage, setIsUploadingImage] = useState(false)
 
     // Reset form when modal opens
     useEffect(() => {
@@ -117,18 +119,46 @@ const PlantsAdd = () => {
     }
 
     // Handle image file upload
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
+        e.preventDefault(); // Prevent any default behavior
+        e.stopPropagation(); // Stop event bubbling
+        
         const file = e.target.files[0]
         if (file) {
-            // #backend - In real app, this would upload to server/cloud storage
-            const reader = new FileReader()
-            reader.onload = (event) => {
+            try {
+                setIsUploadingImage(true)
+                
+                // Create FormData for file upload
+                const formData = new FormData()
+                formData.append('file', file)
+                
+                // Upload directly without using the context function to avoid global loading state
+                const response = await fetch('http://localhost:5000/api/upload', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: formData
+                })
+                
+                if (!response.ok) {
+                    throw new Error('Error uploading image')
+                }
+                
+                const data = await response.json()
+                
                 setFormData(prev => ({
                     ...prev,
-                    image: event.target.result
+                    image: data.url
                 }))
+            } catch (error) {
+                console.error('Error uploading image:', error)
+                // Clear the file input to allow re-selection
+                e.target.value = '';
+            } finally {
+                setIsUploadingImage(false)
             }
-            reader.readAsDataURL(file)
         }
     }
 
@@ -136,7 +166,7 @@ const PlantsAdd = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         
-        if (!isFormValid || isLoading) return
+        if (!isFormValid || isLoading || isUploadingImage) return
 
         try {
             await addPlant(formData)
@@ -216,13 +246,20 @@ const PlantsAdd = () => {
                                     className="plant_add__image-input"
                                     accept="image/*"
                                     onChange={handleImageUpload}
+                                    disabled={isUploadingImage}
                                 />
                                 <label 
                                     htmlFor="plant-image-upload" 
-                                    className="plant_add__image-button"
+                                    className={`plant_add__image-button ${isUploadingImage ? 'uploading' : ''}`}
+                                    onClick={(e) => e.stopPropagation()} // Add this to prevent event bubbling
                                 >
                                     <FaUpload />
-                                    {formData.image ? content.form.image.changeText : content.form.image.uploadText}
+                                    {isUploadingImage 
+                                        ? 'Subiendo...' 
+                                        : formData.image 
+                                            ? content.form.image.changeText 
+                                            : content.form.image.uploadText
+                                    }
                                 </label>
 
                                 <input
@@ -231,6 +268,7 @@ const PlantsAdd = () => {
                                     placeholder={content.form.image.placeholder}
                                     value={formData.image}
                                     onChange={(e) => handleInputChange('image', e.target.value)}
+                                    disabled={isUploadingImage}
                                 />
                             </div>
                         </div>

@@ -712,6 +712,31 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    // Image upload function for Cloudinary
+    const uploadImageToCloudinary = async (file) => {
+        try {
+            setIsLoading(true)
+            
+            const formData = new FormData()
+            formData.append('file', file)
+            
+            // Fixed URL to match server route
+            const response = await axios.post('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            
+            return response.data.url
+        } catch (error) {
+            console.error('Error uploading image to Cloudinary:', error)
+            setError('Error al subir la imagen')
+            throw error
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     // Context value with navigate and location
     const contextValue = {
         // Navigation
@@ -828,6 +853,9 @@ export const AppProvider = ({ children }) => {
 
         // User functions
         getUserName,
+        
+        // Image upload function - Added this line
+        uploadImageToCloudinary,
     }
 
     return (
