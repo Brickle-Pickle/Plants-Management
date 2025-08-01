@@ -83,6 +83,7 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
     careType: String, // "watering", "fertilizing", "pruning", "repotting"
     description: String,
     nextDueDate: Date, // calculated based on frequency
+    frequency: String,
     completed: Boolean,
     completedAt: Date,
     notes: String,
@@ -139,20 +140,19 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 - [X] Endpoint para eliminar planta
 
 #### Día 11-12: Subida de Imágenes
-- [ ] Configurar Multer
-- [ ] Integración con Cloudinary
-- [ ] Endpoint para subir fotos
-- [ ] Validación de tipos de archivo
-- [ ] Redimensionado automático
+- [X] Configurar Multer
+- [X] Integración con Cloudinary
+- [X] Endpoint para subir fotos
+- [X] Validación de tipos de archivo
+- [X] Redimensionado automático
 
 ### Fase 3: Sistema de Cuidados (Semana 3)
 
 #### Día 15-17: Historial de Cuidados
-- [ ] Modelo CareRecord
-- [ ] Endpoint para registrar cuidado
-- [ ] Endpoint para historial por planta
+- [X] Modelo CareRecord
+- [x] Endpoint para registrar cuidado
+- [x] Endpoint para historial por planta
 - [ ] Estadísticas de cuidados
-- [ ] Filtros por tipo y fecha
 
 #### Día 18-19: Recordatorios Básicos
 - [ ] Modelo Reminder

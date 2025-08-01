@@ -33,14 +33,14 @@ export const AppProvider = ({ children }) => {
     const location = useLocation()
     
     // Global state variables
-    const [user, setUser] = useState(null) // #backend - will be populated from API
-    const [isAuthenticated, setIsAuthenticated] = useState(false) // #backend - will be managed by auth system
+    const [user, setUser] = useState(null)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false) // Global loading state
     const [error, setError] = useState(null) // Global error state
 
     // Plants Grid State Variables
-    const [plants, setPlants] = useState([]) // #backend - will be populated from API
+    const [plants, setPlants] = useState([])
     const [isLoadingPlants, setIsLoadingPlants] = useState(false)
     const [plantsError, setPlantsError] = useState(null)
     
@@ -184,13 +184,9 @@ export const AppProvider = ({ children }) => {
             
             const response = await axios.post('/api/plants/create', plantData);
             
-            // Generate new ID (in real app, this would come from backend)
-            const newId = response.data._id
-            
-            // Create new plant object
+            // Use the plant data returned from backend directly
             const newPlant = {
-                id: newId,
-                ...plantData,
+                ...response.data, // This will include _id from MongoDB
                 lastWatered: plantData.lastWatered ? new Date(plantData.lastWatered) : null,
                 nextWatering: plantData.nextWatering ? new Date(plantData.nextWatering) : null
             }
@@ -236,10 +232,10 @@ export const AppProvider = ({ children }) => {
             const response = await axios.put(`/api/plants/${plantId}`, updatedData);
             console.log('Update API Response:', response.data);
             
-            // Update plant in local state - ensure prevPlants is always an array
+            // Update plant in local state - use _id for comparison
             setPlants(prevPlants => 
                 (prevPlants || []).map(plant => 
-                    plant.id === plantId 
+                    plant._id === plantId 
                         ? { ...plant, ...updatedData }
                         : plant
                 )
@@ -343,56 +339,11 @@ export const AppProvider = ({ children }) => {
             setIsLoadingCareHistory(true)
             setCareHistoryError(null)
             
-            // #backend - will connect to /api/plants/:id/care-history
-            console.log('Fetching care history for plant:', plantId)
+           const response = await axios.get('/api/careRecords/' + plantId);
+           console.log('API Response:', response.data);
             
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1000))
-            
-            // Simulate care records data
-            const mockCareRecords = [
-                {
-                    _id: '1',
-                    plantId: plantId,
-                    userId: 'user1',
-                    careType: 'watering',
-                    description: 'Riego regular de la planta',
-                    nextDueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                    completed: true,
-                    completedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-                    notes: 'La planta se veía un poco seca',
-                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)
-                },
-                {
-                    _id: '2',
-                    plantId: plantId,
-                    userId: 'user1',
-                    careType: 'fertilizing',
-                    description: 'Fertilización mensual',
-                    nextDueDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
-                    completed: true,
-                    completedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
-                    notes: 'Aplicado fertilizante líquido',
-                    createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
-                },
-                {
-                    _id: '3',
-                    plantId: plantId,
-                    userId: 'user1',
-                    careType: 'pruning',
-                    description: 'Poda de hojas secas',
-                    nextDueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-                    completed: false,
-                    completedAt: null,
-                    notes: 'Revisar hojas amarillas en la parte inferior',
-                    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
-                }
-            ]
-            
-            setCareRecords(mockCareRecords)
-            
+            setCareRecords(response.data)            
         } catch (error) {
-            // #backend - will handle API errors
             setCareHistoryError('Error al cargar el historial de cuidados')
             console.error('Error fetching care history:', error)
         } finally {

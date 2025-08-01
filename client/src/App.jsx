@@ -12,6 +12,7 @@ import Register from './user_pages/register/register.jsx'
 import Plants from './user_pages/plants/plants.jsx'
 import CareHistory from './user_pages/care-history/care_history.jsx'
 import Reminders from './user_pages/reminders/reminders.jsx'
+import Error404 from './user_pages/error/error.jsx'
 // Modals
 import PlantsDelete from './user_pages/plants/plants_delete.jsx'
 import PlantsEdit from './user_pages/plants/plants_edit.jsx'
@@ -48,6 +49,7 @@ function App() {
                 <Route path="/plants" element={<Plants />} />
                 <Route path="/care-history/:id" element={<CareHistory />} />
                 <Route path="/reminders" element={<Reminders />} />
+                <Route path="*" element={<Error404 />} />
             </Routes>
 
             { /* Footer */ }

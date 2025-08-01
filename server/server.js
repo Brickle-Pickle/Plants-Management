@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './controllers/auth.js';
 import plantsRoutes from './controllers/plantsController.js';
+import careRecordsRoutes from './controllers/careRecordsController.js';
 import streamAndUpload from './controllers/cloudinaryController.js'; // Fixed import
 
 dotenv.config();
@@ -19,9 +20,12 @@ app.use(cors({
     optionsSuccessStatus: 200
 }));
 
+// app Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/plants', plantsRoutes);
-app.post('/api/upload', streamAndUpload); // Fixed usage
+app.use('/api/careRecords', careRecordsRoutes);
+// app External apis
+app.post('/api/upload', streamAndUpload); 
 
 app.get('/', (req, res) => {
     res.send('Plant management system working!');

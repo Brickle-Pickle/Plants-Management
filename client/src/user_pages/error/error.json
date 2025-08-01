@@ -1,0 +1,43 @@
+{
+    "pageInfo": {
+        "title": "404",
+        "subtitle": "Página no encontrada",
+        "description": "Parece que esta página se ha perdido como una planta sin cuidados",
+        "message": "La página que buscas no existe o ha sido movida a otro lugar."
+    },
+    "navigation": {
+        "backToHome": "Volver al inicio",
+        "backToPrevious": "Volver atrás",
+        "exploreGarden": "Explorar mi jardín"
+    },
+    "plantQuotes": [
+        "Incluso las plantas más perdidas pueden encontrar su camino de vuelta",
+        "No todas las rutas llevan a donde esperamos, pero siempre hay un camino de regreso",
+        "Como una semilla que busca la luz, encontrarás tu camino",
+        "Cada error es una oportunidad para crecer"
+    ],
+    "suggestions": {
+        "title": "¿Qué puedes hacer?",
+        "options": [
+            {
+                "text": "Ir al dashboard",
+                "description": "Ve tu resumen de plantas y cuidados",
+                "route": "/"
+            },
+            {
+                "text": "Ver mis plantas",
+                "description": "Gestiona tu colección de plantas",
+                "route": "/plants"
+            },
+            {
+                "text": "Recordatorios",
+                "description": "Revisa tus próximos cuidados",
+                "route": "/reminders"
+            }
+        ]
+    },
+    "animation": {
+        "leafCount": 6,
+        "floatingDuration": "3s"
+    }
+}

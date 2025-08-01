@@ -107,7 +107,7 @@ const mockCareRecords = [
 const CareHistory = () => {
     const { plantId } = useParams()
     const {
-        plants = [], // Remove mock data fallback
+        plants = [],
         careRecords = [],
         isLoadingCareHistory = false,
         careHistoryError = null,
@@ -119,12 +119,14 @@ const CareHistory = () => {
         updateCareRecord = () => {},
         navigate = () => {},
         clearError = () => {},
-        fetchPlants = () => {}, // Add fetchPlants function
-        isLoadingPlants = false // Add loading state for plants
+        fetchPlants = () => {},
+        isLoadingPlants = false
     } = useContext(AppContext) || {}
 
-    // Find the current plant
-    const currentPlant = plants.find(plant => plant.id.toString() === plantId)
+    // Find the current plant - Fix ID comparison to handle both _id and id
+    const currentPlant = plants.find(plant => 
+        plant._id?.toString() === plantId || plant.id?.toString() === plantId
+    )
 
     // Load plants and care history when component mounts
     useEffect(() => {
@@ -151,9 +153,9 @@ const CareHistory = () => {
         }
     }, [plantId, plants.length])
 
-    // Filter care records by plantId (convert both to string for comparison)
+    // Filter care records by plantId - Add null check for record.plantId
     const filteredCareRecords = useMemo(() => {
-        return careRecords.filter(record => record.plantId.toString() === plantId)
+        return careRecords.filter(record => record.plantId?.toString() === plantId)
     }, [careRecords, plantId])
 
     // Filter and sort care records
@@ -328,9 +330,10 @@ const CareHistory = () => {
                 <div className="plant-info-card">
                     <div className="plant-info-content">
                         <div className="plant-image-container">
-                            {currentPlant.image ? (
+                            {/* Fix: Use 'photo' field instead of 'image' according to Plants model */}
+                            {currentPlant.photo ? (
                                 <img 
-                                    src={currentPlant.image} 
+                                    src={currentPlant.photo} 
                                     alt={currentPlant.name}
                                     className="plant-image"
                                     onError={(e) => {
@@ -341,7 +344,7 @@ const CareHistory = () => {
                             ) : null}
                             <div 
                                 className="no-image" 
-                                style={{ display: currentPlant.image ? 'none' : 'flex' }}
+                                style={{ display: currentPlant.photo ? 'none' : 'flex' }}
                             >
                                 <IoLeafOutline />
                             </div>
@@ -356,6 +359,31 @@ const CareHistory = () => {
                                 <IoLocationOutline /> 
                                 {currentPlant.location || 'No especificada'}
                             </div>
+                            {/* Add additional plant info if available */}
+                            {currentPlant.info?.status && (
+                                <div className="plant-status">
+                                    <span className={`status-badge status-${currentPlant.info.status}`}>
+                                        {currentPlant.info.status === 'healthy' && 'Saludable'}
+                                        {currentPlant.info.status === 'needsWater' && 'Necesita agua'}
+                                        {currentPlant.info.status === 'needsAttention' && 'Necesita atención'}
+                                        {currentPlant.info.status === 'sick' && 'Enferma'}
+                                    </span>
+                                </div>
+                            )}
+                            {/* Show last watering info if available */}
+                            {currentPlant.info?.lastWatering && (
+                                <div className="plant-last-watering">
+                                    <IoWaterOutline />
+                                    <span>Último riego: {formatDate(currentPlant.info.lastWatering)}</span>
+                                </div>
+                            )}
+                            {/* Show next watering info if available */}
+                            {currentPlant.info?.nextWatering && (
+                                <div className="plant-next-watering">
+                                    <IoTimeOutline />
+                                    <span>Próximo riego: {formatDate(currentPlant.info.nextWatering)}</span>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
