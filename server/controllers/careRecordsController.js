@@ -80,6 +80,7 @@ export const getCareRecord = async (req, res) => {
 }
 
 const router = express.Router();
-router.post('/', createCareRecord);
-router.get('/:id', getCareRecord);
+// Apply protect middleware to both routes
+router.post('/', protect, createCareRecord);
+router.get('/:id', protect, getCareRecord);
 export default router;

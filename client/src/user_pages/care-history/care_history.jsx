@@ -23,89 +23,9 @@ import {
     IoSadOutline
 } from 'react-icons/io5'
 
-// Mock data for testing
-const mockPlants = [
-    {
-        id: 1,
-        name: "Monstera Deliciosa",
-        species: "Monstera deliciosa",
-        location: "Sala de estar",
-        image: "/monstera.png"
-    },
-    {
-        id: 2,
-        name: "Pothos Dorado",
-        species: "Epipremnum aureum",
-        location: "Cocina",
-        image: "/pothos.png"
-    },
-    {
-        id: 3,
-        name: "Sansevieria",
-        species: "Sansevieria trifasciata",
-        location: "Dormitorio",
-        image: "/sansevieria.png"
-    }
-]
-
-const mockCareRecords = [
-    {
-        _id: "1",
-        plantId: 1,
-        careType: "watering",
-        description: "Riego semanal regular",
-        notes: "La tierra estaba bastante seca, necesitaba agua urgentemente",
-        completed: true,
-        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        completedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-        nextDueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) // 5 days from now
-    },
-    {
-        _id: "2",
-        plantId: 1,
-        careType: "fertilizing",
-        description: "Fertilizante líquido mensual",
-        notes: "Aplicado fertilizante balanceado 10-10-10",
-        completed: true,
-        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
-        completedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        nextDueDate: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000) // 23 days from now
-    },
-    {
-        _id: "3",
-        plantId: 1,
-        careType: "pruning",
-        description: "Poda de hojas amarillas",
-        notes: "",
-        completed: false,
-        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-        nextDueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days from now
-    },
-    {
-        _id: "4",
-        plantId: 1,
-        careType: "watering",
-        description: "Riego de emergencia",
-        notes: "Las hojas se veían un poco caídas",
-        completed: true,
-        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        completedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-        nextDueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days from now
-    },
-    {
-        _id: "5",
-        plantId: 1,
-        careType: "repotting",
-        description: "Cambio de maceta por crecimiento",
-        notes: "Necesita una maceta más grande, las raíces están saliendo por los agujeros de drenaje",
-        completed: false,
-        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        nextDueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week from now
-    }
-]
-
 const CareHistory = () => {
-    const { plantId } = useParams()
+    // Fix: Change plantId to id to match the route parameter defined in App.jsx
+    const { id: plantId } = useParams()
     const {
         plants = [],
         careRecords = [],
