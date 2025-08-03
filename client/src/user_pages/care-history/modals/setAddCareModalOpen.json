@@ -1,0 +1,67 @@
+{
+    "modal": {
+        "title": "Agregar Registro de Cuidado",
+        "subtitle": "Registra un nuevo cuidado para tu planta",
+        "close": "Cerrar"
+    },
+    "form": {
+        "careType": {
+            "label": "Tipo de Cuidado",
+            "placeholder": "Selecciona el tipo de cuidado",
+            "required": "El tipo de cuidado es obligatorio"
+        },
+        "description": {
+            "label": "Descripción",
+            "placeholder": "Describe brevemente el cuidado realizado",
+            "required": "La descripción es obligatoria"
+        },
+        "notes": {
+            "label": "Notas Adicionales",
+            "placeholder": "Agrega notas adicionales (opcional)"
+        },
+        "frequency": {
+            "label": "Frecuencia",
+            "placeholder": "¿Con qué frecuencia se debe repetir?",
+            "options": {
+                "none": "No repetir",
+                "daily": "Diario",
+                "weekly": "Semanal", 
+                "biweekly": "Cada 2 semanas",
+                "monthly": "Mensual",
+                "quarterly": "Cada 3 meses",
+                "yearly": "Anual"
+            }
+        },
+        "completed": {
+            "label": "Marcar como completado",
+            "description": "¿Ya realizaste este cuidado?"
+        }
+    },
+    "careTypes": {
+        "watering": "Riego",
+        "fertilizing": "Fertilización",
+        "pruning": "Poda",
+        "repotting": "Trasplante"
+    },
+    "actions": {
+        "cancel": "Cancelar",
+        "save": "Guardar Cuidado",
+        "saving": "Guardando..."
+    },
+    "validation": {
+        "careTypeRequired": "Selecciona un tipo de cuidado",
+        "descriptionRequired": "Ingresa una descripción",
+        "descriptionMinLength": "La descripción debe tener al menos 3 caracteres",
+        "descriptionMaxLength": "La descripción no puede exceder 200 caracteres",
+        "notesMaxLength": "Las notas no pueden exceder 500 caracteres"
+    },
+    "success": {
+        "title": "¡Cuidado Registrado!",
+        "message": "El registro de cuidado se ha guardado exitosamente"
+    },
+    "error": {
+        "title": "Error al Guardar",
+        "message": "No se pudo guardar el registro de cuidado. Inténtalo de nuevo.",
+        "retry": "Reintentar"
+    }
+}

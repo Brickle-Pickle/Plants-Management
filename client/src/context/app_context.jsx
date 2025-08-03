@@ -51,6 +51,17 @@ export const AppProvider = ({ children }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [selectedPlant, setSelectedPlant] = useState(null)
     
+    // Reminder Modal State Variables
+    const [isReminderAddModalOpen, setIsReminderAddModalOpen] = useState(false)
+    const [isReminderEditModalOpen, setIsReminderEditModalOpen] = useState(false)
+    const [isReminderDeleteModalOpen, setIsReminderDeleteModalOpen] = useState(false)
+    
+    // Care Record Modal State Variables
+    const [isAddCareModalOpen, setIsAddCareModalOpen] = useState(false)
+    const [isEditCareModalOpen, setIsEditCareModalOpen] = useState(false)
+    const [isDeleteCareModalOpen, setIsDeleteCareModalOpen] = useState(false)
+    const [selectedCareRecord, setSelectedCareRecord] = useState(null)
+    
     // Care History State Variables
     const [careRecords, setCareRecords] = useState([]) // #backend - will be populated from API
     const [isLoadingCareHistory, setIsLoadingCareHistory] = useState(false)
@@ -65,11 +76,6 @@ export const AppProvider = ({ children }) => {
     const [remindersFilter, setRemindersFilter] = useState('all') // 'all', 'pending', 'completed', 'overdue'
     const [remindersSortBy, setRemindersSortBy] = useState('date') // 'date', 'type', 'plant'
     const [selectedReminder, setSelectedReminder] = useState(null)
-    
-    // Reminder Modal State Variables
-    const [isReminderAddModalOpen, setIsReminderAddModalOpen] = useState(false)
-    const [isReminderEditModalOpen, setIsReminderEditModalOpen] = useState(false)
-    const [isReminderDeleteModalOpen, setIsReminderDeleteModalOpen] = useState(false)
     
     // Grid View Settings
     const [gridViewMode, setGridViewMode] = useState('grid') // 'grid' or 'list'
@@ -129,6 +135,11 @@ export const AppProvider = ({ children }) => {
         setIsReminderEditModalOpen(false)
         setIsReminderDeleteModalOpen(false)
         setSelectedReminder(null)
+        // Close care record modals
+        setIsAddCareModalOpen(false)
+        setIsEditCareModalOpen(false)
+        setIsDeleteCareModalOpen(false)
+        setSelectedCareRecord(null)
     }
 
     // Reminder Modal Functions
@@ -144,6 +155,21 @@ export const AppProvider = ({ children }) => {
     const openReminderDeleteModal = (reminder) => {
         setSelectedReminder(reminder)
         setIsReminderDeleteModalOpen(true)
+    }
+
+    // Care Record Modal Functions
+    const openAddCareModal = () => {
+        setIsAddCareModalOpen(true)
+    }
+
+    const openEditCareModal = (careRecord) => {
+        setSelectedCareRecord(careRecord)
+        setIsEditCareModalOpen(true)
+    }
+
+    const openDeleteCareModal = (careRecord) => {
+        setSelectedCareRecord(careRecord)
+        setIsDeleteCareModalOpen(true)
     }
 
     const getUserName = () => {
@@ -761,6 +787,16 @@ export const AppProvider = ({ children }) => {
         isReminderDeleteModalOpen,
         setIsReminderDeleteModalOpen,
         
+        // Care Record Modal State
+        isAddCareModalOpen,
+        setIsAddCareModalOpen,
+        isEditCareModalOpen,
+        setIsEditCareModalOpen,
+        isDeleteCareModalOpen,
+        setIsDeleteCareModalOpen,
+        selectedCareRecord,
+        setSelectedCareRecord,
+        
         // Grid Settings
         gridViewMode,
         setGridViewMode,
@@ -784,6 +820,11 @@ export const AppProvider = ({ children }) => {
         openReminderAddModal,
         openReminderEditModal,
         openReminderDeleteModal,
+        
+        // Care Record Modal Functions
+        openAddCareModal,
+        openEditCareModal,
+        openDeleteCareModal,
         
         // Care History Functions
         fetchCareHistory,

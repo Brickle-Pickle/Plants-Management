@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import AppContext from '../../context/app_context.jsx'
+import SetAddCareModalOpen from './modals/setAddCareModalOpen.jsx'
 import content from './care_history.json'
 import './care_history.css'
 // React Icons imports
@@ -24,23 +25,28 @@ import {
 } from 'react-icons/io5'
 
 const CareHistory = () => {
-    // Fix: Change plantId to id to match the route parameter defined in App.jsx
     const { id: plantId } = useParams()
     const {
-        plants = [],
-        careRecords = [],
-        isLoadingCareHistory = false,
-        careHistoryError = null,
-        careHistoryFilter = 'all',
-        setCareHistoryFilter = () => {},
-        careHistorySortBy = 'date',
-        setCareHistorySortBy = () => {},
-        fetchCareHistory = () => {},
-        updateCareRecord = () => {},
-        navigate = () => {},
-        clearError = () => {},
-        fetchPlants = () => {},
-        isLoadingPlants = false
+        // Navigation
+        navigate,
+        // Plants state
+        plants,
+        isLoadingPlants,
+        plantsError,
+        // Care records state
+        careRecords,
+        isLoadingCareHistory,
+        careHistoryError,
+        careHistoryFilter,
+        setCareHistoryFilter,
+        careHistorySortBy,
+        setCareHistorySortBy,
+        // Functions
+        fetchPlants,
+        fetchCareHistory,
+        updateCareRecord,
+        openAddCareModal,
+        clearError
     } = useContext(AppContext) || {}
 
     // Find the current plant - Fix ID comparison to handle both _id and id
@@ -228,7 +234,10 @@ const CareHistory = () => {
     }
 
     return (
-        <div className="care-history">
+        <div className="care-history-page">
+            {/* Add Care Modal */}
+            <SetAddCareModalOpen />
+            
             <div className="care-history-container">
                 {/* Header */}
                 <div className="care-history-header">
@@ -337,7 +346,10 @@ const CareHistory = () => {
                         </div>
                     </div>
                     
-                    <button className="add-care-button">
+                    <button 
+                        className="add-care-button"
+                        onClick={() => openAddCareModal()}
+                    >
                         <IoAddOutline /> 
                         <span className="not_responsive">{content.actions.addCare}</span>
                     </button>

@@ -1,0 +1,403 @@
+.add_care_modal {
+    /* Modal Overlay */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    padding: var(--spacing-md);
+    animation: fadeIn var(--transition-normal);
+}
+
+.add_care_modal .modal-content {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 1200px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp var(--transition-normal);
+    border: 1px solid var(--card-border);
+}
+
+.add_care_modal .modal-header {
+    padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-neutral-200);
+    position: relative;
+}
+
+.add_care_modal .modal-title {
+    font-family: var(--ff-primary);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-primary-700);
+    margin: 0 0 var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.add_care_modal .modal-title .title-icon {
+    font-size: var(--text-3xl);
+    color: var(--color-primary-600);
+}
+
+.add_care_modal .modal-subtitle {
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-600);
+    margin: 0;
+}
+
+.add_care_modal .close-button {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    background: none;
+    border: none;
+    font-size: var(--text-xl);
+    color: var(--color-neutral-500);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add_care_modal .close-button:hover {
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-700);
+    transform: scale(1.1);
+}
+
+.add_care_modal .modal-body {
+    padding: var(--spacing-xl);
+}
+
+.add_care_modal .form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.add_care_modal .form-label {
+    display: block;
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-neutral-700);
+    margin-bottom: var(--spacing-sm);
+}
+
+.add_care_modal .form-label.required::after {
+    content: " *";
+    color: var(--color-error);
+}
+
+.add_care_modal .form-input,
+.add_care_modal .form-select,
+.add_care_modal .form-textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--input-border);
+    border-radius: var(--radius-md);
+    font-family: var(--ff-secondary);
+    font-size: var(--text-base);
+    color: var(--input-text);
+    background-color: var(--input-bg);
+    transition: all var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.add_care_modal .form-input:focus,
+.add_care_modal .form-select:focus,
+.add_care_modal .form-textarea:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+    transform: translateY(-1px);
+}
+
+.add_care_modal .form-input::placeholder,
+.add_care_modal .form-textarea::placeholder {
+    color: var(--input-placeholder);
+}
+
+.add_care_modal .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+    max-height: 150px;
+}
+
+.add_care_modal .form-select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right var(--spacing-md) center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: var(--spacing-3xl);
+}
+
+.add_care_modal .care-type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+}
+
+.add_care_modal .care-type-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-lg);
+    border: 2px solid var(--color-neutral-200);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: var(--color-neutral-50);
+    text-align: center;
+}
+
+.add_care_modal .care-type-option:hover {
+    border-color: var(--color-primary-300);
+    background: var(--color-primary-50);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.add_care_modal .care-type-option.selected {
+    border-color: var(--color-primary-500);
+    background: var(--color-primary-100);
+    color: var(--color-primary-700);
+}
+
+.add_care_modal .care-type-icon {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary-600);
+}
+
+.add_care_modal .care-type-name {
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    margin: 0;
+}
+
+.add_care_modal .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-neutral-200);
+    border-radius: var(--radius-md);
+    background: var(--color-neutral-50);
+    transition: all var(--transition-fast);
+}
+
+.add_care_modal .checkbox-group:hover {
+    border-color: var(--color-primary-300);
+    background: var(--color-primary-700);
+}
+
+.add_care_modal .checkbox-input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary-600);
+    cursor: pointer;
+}
+
+.add_care_modal .checkbox-label {
+    font-family: var(--ff-secondary);
+    font-size: var(--text-base);
+    font-weight: var(--font-medium);
+    color: var(--color-neutral-700);
+    cursor: pointer;
+    margin: 0;
+    flex: 1;
+}
+
+.add_care_modal .checkbox-description {
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+    color: var(--color-neutral-500);
+    margin: 0;
+}
+
+.add_care_modal .form-error {
+    color: var(--color-error);
+    font-family: var(--ff-secondary);
+    font-size: var(--text-sm);
+    margin-top: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.add_care_modal .form-error .error-icon {
+    font-size: var(--text-base);
+}
+
+.add_care_modal .modal-footer {
+    padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+    border-top: 1px solid var(--color-neutral-200);
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+}
+
+.add_care_modal .action-button {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-md);
+    font-family: var(--ff-secondary);
+    font-size: var(--text-base);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    border: none;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.add_care_modal .action-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.add_care_modal .btn-secondary {
+    background: var(--color-neutral-100);
+    color: var(--color-neutral-700);
+    border: 2px solid var(--color-neutral-300);
+}
+
+.add_care_modal .btn-secondary:hover:not(:disabled) {
+    background: var(--color-neutral-200);
+    border-color: var(--color-neutral-400);
+    transform: translateY(-1px);
+}
+
+.add_care_modal .btn-primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: 2px solid var(--btn-primary-bg);
+}
+
+.add_care_modal .btn-primary:hover:not(:disabled) {
+    background: var(--btn-primary-hover);
+    border-color: var(--btn-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.add_care_modal .loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .add_care_modal {
+        padding: var(--spacing-sm);
+        align-items: flex-end;
+    }
+    
+    .add_care_modal .modal-content {
+        max-height: 95vh;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        animation: slideUpMobile var(--transition-normal);
+    }
+    
+    .add_care_modal .modal-header {
+        padding: var(--spacing-lg);
+    }
+    
+    .add_care_modal .modal-title {
+        font-size: var(--text-xl);
+    }
+    
+    .add_care_modal .modal-body {
+        padding: var(--spacing-lg);
+    }
+    
+    .add_care_modal .modal-footer {
+        padding: var(--spacing-lg);
+        flex-direction: column;
+    }
+    
+    .add_care_modal .action-button {
+        width: 100%;
+    }
+    
+    .add_care_modal .care-type-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@keyframes slideUpMobile {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Focus management for accessibility */
+.add_care_modal .modal-content:focus {
+    outline: none;
+}
+
+.add_care_modal .form-input:invalid,
+.add_care_modal .form-select:invalid,
+.add_care_modal .form-textarea:invalid {
+    border-color: var(--color-error);
+}
+
+.add_care_modal .form-input:invalid:focus,
+.add_care_modal .form-select:invalid:focus,
+.add_care_modal .form-textarea:invalid:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 20%, transparent);
+}
