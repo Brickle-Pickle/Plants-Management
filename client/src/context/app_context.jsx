@@ -381,27 +381,23 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/care-records POST
             console.log('Adding care record:', careData)
             
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 800))
+            // Fix: Add await to the axios call and send correct data format
+            const response = await axios.post('/api/careRecords/create', careData)
             
-            // Generate new ID (in real app, this would come from backend)
-            const newId = Math.max(...careRecords.map(c => parseInt(c._id)), 0) + 1
+            // Generate new ID from backend response
+            const newId = response.data._id
             
-            // Create new care record object
+            // Create new care record object with response data
             const newCareRecord = {
-                _id: newId.toString(),
-                ...careData,
-                createdAt: new Date()
+                ...response.data
             }
             
             // Add care record to local state
             setCareRecords(prevRecords => [...prevRecords, newCareRecord])
             
         } catch (error) {
-            // #backend - will handle API errors
             setError('Error al agregar el registro de cuidado')
             console.error('Error adding care record:', error)
             throw error
@@ -414,12 +410,10 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/care-records/:id PUT
-            console.log('Updating care record:', recordId, updatedData)
+            const response = await axios.put('/api/careRecords/' + recordId, updatedData)
             
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 600))
-            
+            console.log('Update API Response:', response.data);
+
             // Update care record in local state
             setCareRecords(prevRecords => 
                 prevRecords.map(record => 
@@ -430,9 +424,9 @@ export const AppProvider = ({ children }) => {
             )
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al actualizar el registro de cuidado')
-            console.error('Error updating care record:', error)
+            const errorMessage = error.response?.data?.msg || 'Error al actualizar el registro de cuidado'
+            setError(errorMessage)
+            console.error('Error updating care record:', errorMessage)
             throw error
         } finally {
             setIsLoading(false)

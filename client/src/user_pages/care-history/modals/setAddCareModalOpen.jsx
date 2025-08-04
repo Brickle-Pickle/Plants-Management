@@ -124,7 +124,6 @@ const SetAddCareModalOpen = () => {
                 completedAt: formData.completed ? new Date() : undefined
             }
 
-            // #backend - Call API to create care record
             await addCareRecord(careRecordData)
             
             // Close modal on success
