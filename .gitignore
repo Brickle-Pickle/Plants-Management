@@ -1,3 +1,7 @@
 # Development
 .env
 .env.test
+
+# Project info
+backend.md
+frontend.md

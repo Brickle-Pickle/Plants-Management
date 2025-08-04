@@ -155,16 +155,9 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 
 #### Día 18-19: Recordatorios Básicos
 - [X] Modelo Reminder
-- [ ] Crear recordatorio manual
-- [ ] Listar recordatorios pendientes
-- [ ] Marcar como completado
-- [ ] Cálculo de próximas fechas
-
-#### Día 20-21: Tests y Optimización
-- [ ] Tests para sistema de cuidados
-- [ ] Optimización de consultas
-- [ ] Índices en MongoDB
-- [ ] Validación de datos
+- [X] Crear recordatorio manual
+- [X] Listar recordatorios pendientes
+- [X] Marcar como completado
 
 ### Fase 4: Automatización (Semana 4)
 
