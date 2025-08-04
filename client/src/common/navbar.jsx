@@ -209,7 +209,7 @@ const Navbar = () => {
                                     <div className="navbar__user-avatar">
                                         <FaUser />
                                     </div>
-                                    <span>{user?.name || 'Usuario'}</span>
+                                    <span>{getUserName()}</span>
                                 </div>
                                 <button
                                     onClick={handleLogout}

@@ -152,10 +152,9 @@ Una aplicación web completa para ayudar a los usuarios a gestionar y cuidar sus
 - [X] Modelo CareRecord
 - [x] Endpoint para registrar cuidado
 - [x] Endpoint para historial por planta
-- [ ] Estadísticas de cuidados
 
 #### Día 18-19: Recordatorios Básicos
-- [ ] Modelo Reminder
+- [X] Modelo Reminder
 - [ ] Crear recordatorio manual
 - [ ] Listar recordatorios pendientes
 - [ ] Marcar como completado

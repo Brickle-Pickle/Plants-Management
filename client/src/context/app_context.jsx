@@ -63,14 +63,14 @@ export const AppProvider = ({ children }) => {
     const [selectedCareRecord, setSelectedCareRecord] = useState(null)
     
     // Care History State Variables
-    const [careRecords, setCareRecords] = useState([]) // #backend - will be populated from API
+    const [careRecords, setCareRecords] = useState([]) 
     const [isLoadingCareHistory, setIsLoadingCareHistory] = useState(false)
     const [careHistoryError, setCareHistoryError] = useState(null)
     const [careHistoryFilter, setCareHistoryFilter] = useState('all') // 'all', 'completed', 'pending'
     const [careHistorySortBy, setCareHistorySortBy] = useState('date') // 'date', 'type'
     
     // Reminders State Variables
-    const [reminders, setReminders] = useState([]) // #backend - will be populated from API
+    const [reminders, setReminders] = useState([])
     const [isLoadingReminders, setIsLoadingReminders] = useState(false)
     const [remindersError, setRemindersError] = useState(null)
     const [remindersFilter, setRemindersFilter] = useState('all') // 'all', 'pending', 'completed', 'overdue'
@@ -439,85 +439,12 @@ export const AppProvider = ({ children }) => {
             setIsLoadingReminders(true)
             setRemindersError(null)
             
-            // #backend - will connect to /api/reminders
-            console.log('Fetching reminders...')
+            // Simulate API response
+            const response = await axios.get('/api/reminders')
+            console.log('API Response:', response.data);
             
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1000))
-            
-            // Simulate reminders data
-            const mockReminders = [
-                {
-                    _id: '1',
-                    plantId: 1,
-                    userId: 'user1',
-                    careType: 'watering',
-                    scheduledDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // tomorrow
-                    isRecurring: true,
-                    frequency: 7, // every 7 days
-                    status: 'pending',
-                    notificationSent: false,
-                    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-                    updatedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-                },
-                {
-                    _id: '2',
-                    plantId: 2,
-                    userId: 'user1',
-                    careType: 'watering',
-                    scheduledDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // yesterday (overdue)
-                    isRecurring: true,
-                    frequency: 5, // every 5 days
-                    status: 'overdue',
-                    notificationSent: true,
-                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-                    updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
-                },
-                {
-                    _id: '3',
-                    plantId: 1,
-                    userId: 'user1',
-                    careType: 'fertilizing',
-                    scheduledDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // in 15 days
-                    isRecurring: true,
-                    frequency: 30, // every 30 days
-                    status: 'pending',
-                    notificationSent: false,
-                    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
-                    updatedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
-                },
-                {
-                    _id: '4',
-                    plantId: 3,
-                    userId: 'user1',
-                    careType: 'pruning',
-                    scheduledDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // in 3 days
-                    isRecurring: false,
-                    frequency: 0,
-                    status: 'pending',
-                    notificationSent: false,
-                    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-                    updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
-                },
-                {
-                    _id: '5',
-                    plantId: 2,
-                    userId: 'user1',
-                    careType: 'fertilizing',
-                    scheduledDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-                    isRecurring: false,
-                    frequency: 0,
-                    status: 'completed',
-                    notificationSent: true,
-                    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-                    updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
-                }
-            ]
-            
-            setReminders(mockReminders)
-            
+            setReminders(response.data)
         } catch (error) {
-            // #backend - will handle API errors
             setRemindersError('Error al cargar los recordatorios')
             console.error('Error fetching reminders:', error)
         } finally {
@@ -529,14 +456,11 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/reminders POST
-            console.log('Adding reminder:', reminderData)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 800))
+            const response = await axios.post('/api/reminders/create', reminderData)
+            console.log('Add API Response:', response.data);
             
             // Generate new ID (in real app, this would come from backend)
-            const newId = Math.max(...reminders.map(r => parseInt(r._id)), 0) + 1
+            const newId = response.data._id
             
             // Create new reminder object
             const newReminder = {
@@ -553,10 +477,7 @@ export const AppProvider = ({ children }) => {
             closeAllModals()
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al agregar el recordatorio')
             console.error('Error adding reminder:', error)
-            throw error
         } finally {
             setIsLoading(false)
         }

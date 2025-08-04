@@ -85,16 +85,24 @@ const Reminders = () => {
         }
     }
 
-    // Get plant name by ID
+    // Get plant name by ID - Fix: use _id instead of id
     const getPlantName = (plantId) => {
-        const plant = plants.find(p => p.id === plantId)
+        const plant = plants.find(p => p._id === plantId)
         return plant ? plant.name : 'Planta no encontrada'
     }
 
-    // Format date for display
+    // Format date for display - Add validation for invalid dates
     const formatDate = (date) => {
+        if (!date) return 'Fecha no disponible'
+        
         const now = new Date()
         const targetDate = new Date(date)
+        
+        // Check if date is valid
+        if (isNaN(targetDate.getTime())) {
+            return 'Fecha inválida'
+        }
+        
         const diffTime = targetDate - now
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
@@ -111,12 +119,19 @@ const Reminders = () => {
         }
     }
 
-    // Get reminder status based on date
+    // Get reminder status based on date - Add validation
     const getReminderStatus = (reminder) => {
         if (reminder.status === 'completed') return 'completed'
         
+        if (!reminder.scheduleDate) return 'pending'
+        
         const now = new Date()
-        const scheduledDate = new Date(reminder.scheduledDate)
+        const scheduledDate = new Date(reminder.scheduleDate)
+        
+        // Check if date is valid
+        if (isNaN(scheduledDate.getTime())) {
+            return 'pending'
+        }
         
         if (scheduledDate < now) return 'overdue'
         return 'pending'
@@ -134,11 +149,11 @@ const Reminders = () => {
             })
         }
 
-        // Apply sorting
+        // Apply sorting - fix to use scheduleDate from backend
         filtered.sort((a, b) => {
             switch (remindersSortBy) {
                 case 'date':
-                    return new Date(a.scheduledDate) - new Date(b.scheduledDate)
+                    return new Date(a.scheduleDate) - new Date(b.scheduleDate) // Use scheduleDate from backend
                 case 'type':
                     return a.careType.localeCompare(b.careType)
                 case 'plant':
@@ -168,11 +183,11 @@ const Reminders = () => {
         
         try {
             const reminderData = {
-                ...formData,
-                plantId: parseInt(formData.plantId),
-                scheduledDate: new Date(formData.scheduledDate),
-                frequency: formData.isRecurring ? parseInt(formData.frequency) : 0,
-                userId: 'user1' // #backend - will get from auth context
+                plantId: formData.plantId, // Keep as string, backend will convert to ObjectId
+                careType: formData.careType,
+                scheduledDate: formData.scheduledDate, // Backend expects scheduleDate, but we'll send scheduledDate and let backend handle it
+                isRecurring: formData.isRecurring,
+                frequency: formData.isRecurring ? parseInt(formData.frequency) || 1 : 0
             }
 
             if (isReminderEditModalOpen) {
@@ -214,12 +229,12 @@ const Reminders = () => {
         }
     }
 
-    // Open edit modal with reminder data
+    // Open edit modal with reminder data - fix to use scheduleDate from backend
     const handleEditClick = (reminder) => {
         setFormData({
             plantId: reminder.plantId.toString(),
             careType: reminder.careType,
-            scheduledDate: new Date(reminder.scheduledDate).toISOString().split('T')[0],
+            scheduledDate: new Date(reminder.scheduleDate).toISOString().split('T')[0], // Use scheduleDate from backend
             isRecurring: reminder.isRecurring,
             frequency: reminder.frequency.toString()
         })
@@ -345,7 +360,7 @@ const Reminders = () => {
                                         <div className="reminders__card-date">
                                             <FaCalendarAlt className="reminders__date-icon" />
                                             <span className="reminders__date-text">
-                                                {formatDate(reminder.scheduledDate)}
+                                                {formatDate(reminder.scheduleDate)}
                                             </span>
                                         </div>
 
@@ -426,7 +441,7 @@ const Reminders = () => {
                                 >
                                     <option value="">{remindersText.placeholders.selectPlant}</option>
                                     {plants.map(plant => (
-                                        <option key={plant.id} value={plant.id}>
+                                        <option key={plant._id} value={plant._id}>
                                             {plant.name}
                                         </option>
                                     ))}
@@ -510,6 +525,7 @@ const Reminders = () => {
                                 <button
                                     type="submit"
                                     className="reminders__form-button reminders__form-button--save"
+                                    onClick={handleSubmit}
                                 >
                                     {remindersText.buttons.save}
                                 </button>

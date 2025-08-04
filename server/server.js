@@ -5,6 +5,7 @@ import cors from 'cors';
 import authRoutes from './controllers/auth.js';
 import plantsRoutes from './controllers/plantsController.js';
 import careRecordsRoutes from './controllers/careRecordsController.js';
+import remindersRoutes from './controllers/remindersController.js';
 import streamAndUpload from './controllers/cloudinaryController.js'; // Fixed import
 
 dotenv.config();
@@ -24,6 +25,8 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 app.use('/api/plants', plantsRoutes);
 app.use('/api/careRecords', careRecordsRoutes);
+app.use('/api/reminders', remindersRoutes);
+
 // app External apis
 app.post('/api/upload', streamAndUpload); 
 
