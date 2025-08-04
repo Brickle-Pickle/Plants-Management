@@ -79,9 +79,24 @@ export const deleteReminder = async (req, res) => {
     }
 }
 
+export const completeReminder = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedReminder = await Reminders.findByIdAndUpdate(id, { status: 'completed' }, { new: true });
+        if (!updatedReminder) {
+            return res.status(404).json({ msg: 'Reminder not found' });
+        }
+        res.status(200).json(updatedReminder);
+    } catch (error) {
+        console.error('Error completing reminder:', error);
+        res.status(500).json({ msg: 'Server error: ' + error.message });
+    }
+}
+
 const router = express.Router()
 router.post('/create', protect, createReminder)
 router.get('/', protect, getReminders)
 router.put('/:id', protect, updateReminder)
+router.put('/:id/complete', protect, completeReminder)
 router.delete('/:id', protect, deleteReminder)
 export default router

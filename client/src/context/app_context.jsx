@@ -487,11 +487,8 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/reminders/:id PUT
-            console.log('Updating reminder:', reminderId, updatedData)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 600))
+            const response = await axios.put('/api/reminders/' + reminderId, updatedData)
+            console.log('Update API Response:', response.data);
             
             // Update reminder in local state
             setReminders(prevReminders => 
@@ -504,9 +501,9 @@ export const AppProvider = ({ children }) => {
             closeAllModals()
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al actualizar el recordatorio')
-            console.error('Error updating reminder:', error)
+            const errorMessage = error.response?.data?.msg || 'Error al actualizar el recordatorio'
+            setRemindersError(errorMessage)
+            console.error('Error updating reminder:', errorMessage)
             throw error
         } finally {
             setIsLoading(false)
@@ -517,20 +514,17 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/reminders/:id DELETE
-            console.log('Deleting reminder:', reminderId)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 500))
+            const response = await axios.delete('/api/reminders/' + reminderId)
+            console.log('Delete API Response:', response.data);
             
             // Remove reminder from local state
             setReminders(prevReminders => prevReminders.filter(reminder => reminder._id !== reminderId))
             closeAllModals()
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al eliminar el recordatorio')
-            console.error('Error deleting reminder:', error)
+            const errorMessage = error.response?.data?.msg || 'Error al eliminar el recordatorio'
+            setRemindersError(errorMessage)
+            console.error('Error deleting reminder:', errorMessage)
         } finally {
             setIsLoading(false)
         }
@@ -540,11 +534,7 @@ export const AppProvider = ({ children }) => {
         try {
             setIsLoading(true)
             
-            // #backend - will connect to /api/reminders/:id/complete PUT
-            console.log('Completing reminder:', reminderId)
-            
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 600))
+            const response = await axios.put('/api/reminders/' + reminderId + '/complete')
             
             // Update reminder status to completed
             setReminders(prevReminders => 
@@ -556,9 +546,9 @@ export const AppProvider = ({ children }) => {
             )
             
         } catch (error) {
-            // #backend - will handle API errors
-            setError('Error al completar el recordatorio')
-            console.error('Error completing reminder:', error)
+            const errorMessage = error.response?.data?.msg || 'Error al completar el recordatorio'
+            setRemindersError(errorMessage)
+            console.error('Error completing reminder:', errorMessage)
         } finally {
             setIsLoading(false)
         }
